@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Request Blood | BloodConnect 2.0</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f6fa;
+            color: #222;
+        }
+
+        .navbar {
+            background: #c62828;
+            color: white;
+            padding: 18px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            background: white;
+            color: #c62828;
+            padding: 10px 20px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #d32f2f, #ef5350);
+            color: white;
+            text-align: center;
+            padding: 45px 20px;
+        }
+
+        .hero h1 {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 17px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 35px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #c62828;
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #c62828;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #c62828;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #a91f1f;
+        }
+
+        .note {
+            background: #fff3f3;
+            border-left: 4px solid #c62828;
+            padding: 15px;
+            margin-bottom: 25px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .card {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar">
+
+        <div class="brand">
+            🩸 BloodConnect 2.0
+        </div>
+
+        <a href="{% url 'home' %}" class="back-btn">
+            Dashboard
+        </a>
+
+    </div>
+
+
+    <div class="hero">
+
+        <h1>Request Blood</h1>
+
+        <p>
+            Submit a blood requirement and connect with verified help.
+        </p>
+
+    </div>
+
+
+    <div class="container">
+
+        <div class="card">
+
+            <div class="section-title">
+                Blood Request Details
+            </div>
+
+            <div class="note">
+                Please enter accurate patient and hospital information.
+                Your request may be reviewed before it is broadcast to donors.
+            </div>
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="id_patient_name">
+                            Patient Name
+                        </label>
+
+                        {{ form.patient_name }}
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="id_blood_group">
+                            Blood Group
+                        </label>
+
+                        {{ form.blood_group }}
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="id_units_required">
+                            Units Required
+                        </label>
+
+                        {{ form.units_required }}
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="id_urgency">
+                            Urgency
+                        </label>
+
+                        {{ form.urgency }}
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="id_hospital_name">
+                            Hospital Name
+                        </label>
+
+                        {{ form.hospital_name }}
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="id_location">
+                            Location
+                        </label>
+
+                        {{ form.location }}
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="id_contact_number">
+                            Contact Number
+                        </label>
+
+                        {{ form.contact_number }}
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label for="id_additional_message">
+                            Additional Message
+                        </label>
+
+                        {{ form.additional_message }}
+
+                    </div>
+
+                </div>
+
+
+                <button type="submit" class="submit-btn">
+                    🩸 Submit Blood Request
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

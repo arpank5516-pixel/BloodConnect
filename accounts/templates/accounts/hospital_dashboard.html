@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Hospital Dashboard | BloodConnect 2.0</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6fa;
+            color: #202124;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            background: #c90000;
+            color: white;
+            padding: 18px 4%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        .brand {
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+
+        .nav-links a {
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+
+        .home-btn {
+            color: #c90000;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+        }
+
+
+        .logout-btn {
+            color: white;
+            background: #9f0000;
+            padding: 10px 20px;
+            border-radius: 8px;
+        }
+
+
+        /* =========================
+           CONTAINER
+        ========================= */
+
+        .container {
+            width: 84%;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            background: linear-gradient(
+                135deg,
+                #d90000,
+                #ff2b2b
+            );
+
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            margin-bottom: 35px;
+        }
+
+
+        .hero h1 {
+            margin: 0 0 12px;
+            font-size: 34px;
+        }
+
+
+        .hero p {
+            font-size: 17px;
+            margin-bottom: 20px;
+        }
+
+
+        .verified-badge {
+            display: inline-block;
+            background: white;
+            color: #07884b;
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-weight: bold;
+        }
+
+
+        .status-badge {
+            display: inline-block;
+            background: white;
+            color: #c90000;
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           SECTION
+        ========================= */
+
+        .section-title {
+            font-size: 27px;
+            margin: 30px 0 18px;
+        }
+
+
+        /* =========================
+           HOSPITAL INFORMATION
+        ========================= */
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+
+        .info-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+
+        .info-card span {
+            display: block;
+            color: #777;
+            margin-bottom: 8px;
+        }
+
+
+        .info-card strong {
+            font-size: 18px;
+        }
+
+
+        /* =========================
+           NOTIFICATIONS
+        ========================= */
+
+        .notification-section {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+            margin-top: 30px;
+        }
+
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+
+        .notification-header h2 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+
+        .notification-count {
+            background: #d90000;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+
+        .notification {
+            background: #f7f8fa;
+            border-left: 5px solid #168c55;
+            padding: 18px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+
+        .notification.unread {
+            background: #fff5f5;
+            border-left-color: #d90000;
+        }
+
+
+        .notification-title {
+            font-weight: bold;
+            font-size: 17px;
+            margin-bottom: 7px;
+        }
+
+
+        .notification-message {
+            color: #555;
+            line-height: 1.5;
+        }
+
+
+        .notification-time {
+            margin-top: 8px;
+            color: #888;
+            font-size: 13px;
+        }
+
+
+        .read-btn {
+            display: inline-block;
+            margin-top: 12px;
+            background: #168c55;
+            color: white;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+
+        .no-notification {
+            background: #f5f6f8;
+            padding: 18px;
+            border-radius: 8px;
+            color: #777;
+        }
+
+
+        /* =========================
+           REQUEST CARD
+        ========================= */
+
+        .request-card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+
+        .request-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+
+        .request-top h3 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+
+        .status {
+            padding: 9px 16px;
+            border-radius: 20px;
+            background: #e6f5eb;
+            color: #168c55;
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           REQUEST INFORMATION
+        ========================= */
+
+        .request-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 14px;
+        }
+
+
+        .request-info {
+            background: #f5f6f8;
+            padding: 16px;
+            border-radius: 8px;
+        }
+
+
+        .request-info span {
+            display: block;
+            color: #777;
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
+
+
+        .request-info strong {
+            font-size: 15px;
+        }
+
+
+        /* =========================
+           MESSAGE
+        ========================= */
+
+        .message-box {
+            background: #fff7f7;
+            border-left: 4px solid #d90000;
+            padding: 15px;
+            margin-top: 18px;
+            border-radius: 6px;
+        }
+
+
+        .message-box strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+
+        /* =========================
+           DONOR RESPONSES
+        ========================= */
+
+        .responses {
+            margin-top: 20px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+
+        .responses h4 {
+            margin-top: 0;
+            font-size: 18px;
+        }
+
+
+        .response {
+            background: #f6f7f9;
+            padding: 15px;
+            border-left: 4px solid #168c55;
+            border-radius: 7px;
+            margin-bottom: 10px;
+        }
+
+
+        .response-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        .accepted {
+            background: #dff5e8;
+            color: #168c55;
+            padding: 7px 12px;
+            border-radius: 18px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+
+        .declined {
+            background: #ffe5e5;
+            color: #c90000;
+            padding: 7px 12px;
+            border-radius: 18px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+
+        .response-time {
+            color: #888;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+
+        /* =========================
+           ACTIONS
+        ========================= */
+
+        .actions {
+            border-top: 1px solid #eee;
+            margin-top: 20px;
+            padding-top: 18px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+
+        .action-btn {
+            display: inline-block;
+            border: none;
+            padding: 11px 18px;
+            border-radius: 7px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+
+        .verify-btn {
+            background: #168c55;
+        }
+
+
+        .coordinate-btn {
+            background: #168c55;
+        }
+
+
+        .reject-btn {
+            background: #d90000;
+        }
+
+
+        .close-btn {
+            background: #555;
+        }
+
+
+        .no-actions {
+            border-top: 1px solid #eee;
+            margin-top: 20px;
+            padding-top: 18px;
+            color: #777;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+            background: #222;
+            color: #ddd;
+            text-align: center;
+            padding: 25px;
+            margin-top: 60px;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1000px) {
+
+            .info-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .request-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+
+        @media (max-width: 650px) {
+
+            .container {
+                width: 94%;
+            }
+
+            .info-grid,
+            .request-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .request-top {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .hero h1 {
+                font-size: 26px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+
+    <div class="navbar">
+
+        <div class="brand">
+            🏥 BloodConnect 2.0
+        </div>
+
+
+        <div class="nav-links">
+
+            <a
+                href="{% url 'home' %}"
+                class="home-btn"
+            >
+                Home
+            </a>
+
+
+            <a
+                href="{% url 'logout' %}"
+                class="logout-btn"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="container">
+
+
+        {% if hospital_profile %}
+
+
+        <!-- =========================
+             HERO
+        ========================= -->
+
+        <div class="hero">
+
+            <h1>
+                Welcome, {{ hospital_profile.hospital_name }}
+            </h1>
+
+
+            <p>
+                Hospital Dashboard for managing blood requirements
+                and coordinating verified blood requests.
+            </p>
+
+
+            {% if hospital_profile.verification_status == 'Verified' %}
+
+                <div class="verified-badge">
+                    ✓ Verified Hospital
+                </div>
+
+            {% else %}
+
+                <div class="status-badge">
+                    {{ hospital_profile.verification_status }}
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- =========================
+             HOSPITAL INFORMATION
+        ========================= -->
+
+        <h2 class="section-title">
+            Hospital Information
+        </h2>
+
+
+        <div class="info-grid">
+
+
+            <div class="info-card">
+
+                <span>
+                    Hospital Name
+                </span>
+
+                <strong>
+                    {{ hospital_profile.hospital_name }}
+                </strong>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <span>
+                    City
+                </span>
+
+                <strong>
+                    {{ hospital_profile.city }}
+                </strong>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <span>
+                    Contact Number
+                </span>
+
+                <strong>
+                    {{ hospital_profile.contact_number }}
+                </strong>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <span>
+                    Verification
+                </span>
+
+                <strong>
+                    {{ hospital_profile.verification_status }}
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =========================
+             NOTIFICATIONS
+        ========================= -->
+
+        <div class="notification-section">
+
+
+            <div class="notification-header">
+
+                <h2>
+                    Notifications
+                </h2>
+
+
+                {% if unread_notifications > 0 %}
+
+                    <div class="notification-count">
+                        {{ unread_notifications }} New
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            {% if notifications %}
+
+
+                {% for notification in notifications %}
+
+
+                    <div
+                        class="notification {% if not notification.is_read %}unread{% endif %}"
+                    >
+
+                        <div class="notification-title">
+
+                            {{ notification.title }}
+
+                        </div>
+
+
+                        <div class="notification-message">
+
+                            {{ notification.message }}
+
+                        </div>
+
+
+                        {% if not notification.is_read %}
+
+                            <a
+                                href="{% url 'mark_notification_read' notification.id %}"
+                                class="read-btn"
+                            >
+                                Mark as Read
+                            </a>
+
+                        {% endif %}
+
+
+                        <div class="notification-time">
+
+                            {{ notification.created_at|date:"d M Y, h:i A" }}
+
+                            {% if not notification.is_read %}
+
+                                • Unread
+
+                            {% else %}
+
+                                • Read
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                {% endfor %}
+
+
+            {% else %}
+
+
+                <div class="no-notification">
+
+                    No notifications yet.
+
+                </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+        <!-- =========================
+             BLOOD REQUESTS
+        ========================= -->
+
+        <h2 class="section-title">
+            Blood Requests
+        </h2>
+
+
+        {% if blood_requests %}
+
+
+            {% for blood_request in blood_requests %}
+
+
+                <div class="request-card">
+
+
+                    <!-- REQUEST HEADER -->
+
+                    <div class="request-top">
+
+                        <h3>
+                            {{ blood_request.patient_name }}
+                        </h3>
+
+
+                        <div class="status">
+
+                            {{ blood_request.status }}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- REQUEST INFORMATION -->
+
+                    <div class="request-grid">
+
+
+                        <div class="request-info">
+
+                            <span>
+                                Blood Group
+                            </span>
+
+                            <strong>
+                                {{ blood_request.blood_group }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="request-info">
+
+                            <span>
+                                Units Required
+                            </span>
+
+                            <strong>
+                                {{ blood_request.units_required }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="request-info">
+
+                            <span>
+                                Location
+                            </span>
+
+                            <strong>
+                                {{ blood_request.location }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="request-info">
+
+                            <span>
+                                Urgency
+                            </span>
+
+                            <strong>
+                                {{ blood_request.urgency }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="request-info">
+
+                            <span>
+                                Contact
+                            </span>
+
+                            <strong>
+                                {{ blood_request.contact_number }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="request-info">
+
+                            <span>
+                                Created
+                            </span>
+
+                            <strong>
+                                {{ blood_request.created_at|date:"d M Y, h:i A" }}
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- ADDITIONAL MESSAGE -->
+
+                    {% if blood_request.additional_message %}
+
+                        <div class="message-box">
+
+                            <strong>
+                                Additional Message
+                            </strong>
+
+                            {{ blood_request.additional_message }}
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <!-- DONOR RESPONSES -->
+
+                    <div class="responses">
+
+
+                        <h4>
+                            Donor Responses
+                        </h4>
+
+
+                        {% if blood_request.donor_responses.all %}
+
+
+                            {% for response in blood_request.donor_responses.all %}
+
+
+                                <div class="response">
+
+
+                                    <div class="response-top">
+
+
+                                        <strong>
+
+                                            Donor:
+                                            {{ response.donor.donor.username }}
+
+                                        </strong>
+
+
+                                        {% if response.response == 'Accepted' %}
+
+                                            <span class="accepted">
+
+                                                ✓ Accepted
+
+                                            </span>
+
+
+                                        {% elif response.response == 'Declined' %}
+
+                                            <span class="declined">
+
+                                                ✕ Declined
+
+                                            </span>
+
+
+                                        {% else %}
+
+                                            <span>
+
+                                                {{ response.response }}
+
+                                            </span>
+
+                                        {% endif %}
+
+
+                                    </div>
+
+
+                                    <div class="response-time">
+
+                                        Responded:
+                                        {{ response.updated_at|date:"d M Y, h:i A" }}
+
+                                    </div>
+
+
+                                </div>
+
+
+                            {% endfor %}
+
+
+                        {% else %}
+
+
+                            <div class="no-notification">
+
+                                No donor response yet.
+
+                            </div>
+
+
+                        {% endif %}
+
+
+                    </div>
+
+
+                    <!-- =========================
+                         REQUEST ACTIONS
+                    ========================= -->
+
+
+                    <!-- =========================
+     REQUEST ACTIONS
+========================= -->
+
+{% if blood_request.status == 'Submitted' %}
+
+    <div class="actions">
+
+        <a
+            href="{% url 'verify_blood_request' blood_request.id %}"
+            class="action-btn verify-btn"
+        >
+            ✓ Verify Request
+        </a>
+
+    </div>
+
+
+{% elif blood_request.status == 'Verified' or blood_request.status == 'Broadcasted' %}
+
+    <div class="actions">
+
+        <form
+            method="POST"
+            action="{% url 'start_coordination' blood_request.id %}"
+        >
+
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                class="action-btn coordinate-btn"
+            >
+                Start Coordination
+            </button>
+
+        </form>
+
+
+        <form
+            method="POST"
+            action="{% url 'reject_blood_request' blood_request.id %}"
+        >
+
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                class="action-btn reject-btn"
+            >
+                Reject Request
+            </button>
+
+        </form>
+
+
+        <form
+            method="POST"
+            action="{% url 'emergency_broadcast' blood_request.id %}"
+        >
+
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                class="action-btn"
+                style="background:#ff6b00;"
+            >
+                🚨 Emergency Broadcast
+            </button>
+
+        </form>
+
+    </div>
+
+
+{% elif blood_request.status == 'Coordinating' %}
+
+    <div class="actions">
+
+        <form
+            method="POST"
+            action="{% url 'close_blood_request' blood_request.id %}"
+        >
+
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                class="action-btn close-btn"
+            >
+                Close Request
+            </button>
+
+        </form>
+
+
+        <form
+            method="POST"
+            action="{% url 'emergency_broadcast' blood_request.id %}"
+        >
+
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                class="action-btn"
+                style="background:#ff6b00;"
+            >
+                🚨 Emergency Broadcast
+            </button>
+
+        </form>
+
+    </div>
+
+
+{% else %}
+
+    <div class="no-actions">
+
+        No actions available for this status.
+
+    </div>
+
+{% endif %}
+
+
+                </div>
+
+
+            {% endfor %}
+
+
+        {% else %}
+
+
+            <div class="request-card">
+
+                <p>
+                    No blood requests found for this hospital.
+                </p>
+
+            </div>
+
+
+        {% endif %}
+
+
+        {% else %}
+
+
+        <!-- =========================
+             PROFILE NOT FOUND
+        ========================= -->
+
+        <div
+            class="request-card"
+            style="text-align:center;"
+        >
+
+            <h2>
+                Hospital Profile Not Found
+            </h2>
+
+
+            <p>
+                Your hospital profile has not been created yet.
+            </p>
+
+        </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <div class="footer">
+
+        © 2026 BloodConnect 2.0 |
+        Right Donor. Right Time. Verified Help.
+
+    </div>
+
+
+</body>
+
+</html>

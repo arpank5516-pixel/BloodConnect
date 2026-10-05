@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile | BloodConnect 2.0</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f6fa;
+            color: #333;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            background: #c62828;
+            color: white;
+            padding: 18px 45px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .dashboard-btn {
+            background: white;
+            color: #c62828 !important;
+            padding: 9px 18px;
+            border-radius: 6px;
+        }
+
+        /* ================= HEADER ================= */
+
+        .page-header {
+            background: linear-gradient(
+                135deg,
+                #c62828,
+                #e53935
+            );
+
+            color: white;
+            text-align: center;
+            padding: 55px 20px;
+        }
+
+        .page-header h1 {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            font-size: 17px;
+        }
+
+        /* ================= CONTAINER ================= */
+
+        .container {
+            max-width: 950px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
+
+        /* ================= PROFILE CARD ================= */
+
+        .profile-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+
+            box-shadow:
+                0 6px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .profile-top {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .profile-icon {
+            width: 90px;
+            height: 90px;
+
+            margin: 0 auto 15px;
+
+            background: #fff0f0;
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 45px;
+        }
+
+        .profile-top h2 {
+            font-size: 25px;
+            margin-bottom: 7px;
+        }
+
+        .role {
+            color: #c62828;
+            font-weight: bold;
+            text-transform: capitalize;
+        }
+
+        /* ================= DETAILS ================= */
+
+        .details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .detail-box {
+            background: #f8f9fa;
+            padding: 18px;
+            border-radius: 9px;
+        }
+
+        .detail-label {
+            display: block;
+            color: #777;
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
+
+        .detail-value {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        /* ================= BLOOD GROUP ================= */
+
+        .blood-group {
+            color: #c62828;
+            font-size: 22px;
+        }
+
+        /* ================= AVAILABILITY ================= */
+
+        .available {
+            color: #198754;
+        }
+
+        .not-available {
+            color: #dc3545;
+        }
+
+        /* ================= NO PROFILE ================= */
+
+        .no-profile {
+            margin-top: 25px;
+            padding: 20px;
+
+            background: #fff8e1;
+            border-left: 4px solid #ffc107;
+
+            border-radius: 7px;
+
+            color: #666;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            margin-top: 60px;
+
+            background: #222;
+            color: #ccc;
+
+            text-align: center;
+            padding: 25px;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 768px) {
+
+            .navbar {
+                padding: 15px 20px;
+
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .page-header {
+                padding: 45px 20px;
+            }
+
+            .page-header h1 {
+                font-size: 30px;
+            }
+
+            .container {
+                margin: 30px auto;
+            }
+
+            .profile-card {
+                padding: 25px 20px;
+            }
+
+            .details {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            🩸 BloodConnect 2.0
+        </div>
+
+        <div class="nav-links">
+
+            <a
+                href="/accounts/home/"
+                class="dashboard-btn">
+
+                Dashboard
+
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ================= HEADER ================= -->
+
+    <section class="page-header">
+
+        <h1>
+            My Profile
+        </h1>
+
+        <p>
+            View your BloodConnect account information
+        </p>
+
+    </section>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="container">
+
+        <div class="profile-card">
+
+
+            <!-- PROFILE TOP -->
+
+            <div class="profile-top">
+
+                <div class="profile-icon">
+                    👤
+                </div>
+
+                <h2>
+                    {{ request.user.first_name|default:request.user.username }}
+                </h2>
+
+                <div class="role">
+                    {{ request.user.role }}
+                </div>
+
+            </div>
+
+
+            <!-- USER DETAILS -->
+
+            <div class="details">
+
+
+                <div class="detail-box">
+
+                    <span class="detail-label">
+                        Username
+                    </span>
+
+                    <span class="detail-value">
+                        {{ request.user.username }}
+                    </span>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span class="detail-label">
+                        Email
+                    </span>
+
+                    <span class="detail-value">
+                        {{ request.user.email|default:"Not provided" }}
+                    </span>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span class="detail-label">
+                        First Name
+                    </span>
+
+                    <span class="detail-value">
+                        {{ request.user.first_name|default:"Not provided" }}
+                    </span>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span class="detail-label">
+                        Last Name
+                    </span>
+
+                    <span class="detail-value">
+                        {{ request.user.last_name|default:"Not provided" }}
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- ================= DONOR PROFILE ================= -->
+
+            {% if donor_profile %}
+
+                <div style="margin-top: 40px;">
+
+                    <h2 style="margin-bottom: 20px; color: #c62828;">
+                        Donor Information
+                    </h2>
+
+
+                    <div class="details">
+
+
+                        <div class="detail-box">
+
+                            <span class="detail-label">
+                                Blood Group
+                            </span>
+
+                            <span class="blood-group">
+                                {{ donor_profile.blood_group }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="detail-box">
+
+                            <span class="detail-label">
+                                Phone Number
+                            </span>
+
+                            <span class="detail-value">
+                                {{ donor_profile.phone_number }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="detail-box">
+
+                            <span class="detail-label">
+                                Location
+                            </span>
+
+                            <span class="detail-value">
+                                {{ donor_profile.location }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="detail-box">
+
+                            <span class="detail-label">
+                                Availability
+                            </span>
+
+                            {% if donor_profile.is_available %}
+
+                                <span class="detail-value available">
+                                    ● Available
+                                </span>
+
+                            {% else %}
+
+                                <span class="detail-value not-available">
+                                    ● Not Available
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="detail-box">
+
+                            <span class="detail-label">
+                                Last Donation
+                            </span>
+
+                            <span class="detail-value">
+
+                                {% if donor_profile.last_donation_date %}
+
+                                    {{ donor_profile.last_donation_date|date:"d M Y" }}
+
+                                {% else %}
+
+                                    Not provided
+
+                                {% endif %}
+
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            {% elif request.user.role == 'donor' %}
+
+                <div class="no-profile">
+
+                    Your donor profile has not been created yet.
+
+                </div>
+
+            {% endif %}
+
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <p>
+            © 2026 BloodConnect 2.0 |
+            Connecting Lives Through Blood Donation
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>

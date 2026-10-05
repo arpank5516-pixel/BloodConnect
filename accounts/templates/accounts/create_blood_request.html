@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Request Blood | BloodConnect 2.0</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f6fa;
+            color: #333;
+        }
+
+        /* Navbar */
+
+        .navbar {
+            background: #c62828;
+            color: white;
+            padding: 18px 45px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Main container */
+
+        .container {
+            max-width: 950px;
+            margin: 50px auto;
+            padding: 0 25px;
+        }
+
+        /* Page heading */
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .page-title h1 {
+            color: #c62828;
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        .page-title p {
+            color: #777;
+            font-size: 16px;
+        }
+
+        /* Form card */
+
+        .form-card {
+            background: white;
+            padding: 45px;
+            border-radius: 15px;
+
+            box-shadow:
+                0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Information text */
+
+        .required-note {
+            background: #fff4f4;
+            border-left: 4px solid #c62828;
+
+            padding: 14px 16px;
+            margin-bottom: 35px;
+
+            color: #666;
+            font-size: 14px;
+
+            border-radius: 5px;
+        }
+
+        /* Django form paragraphs */
+
+        .form-card p {
+            margin-bottom: 28px;
+        }
+
+        /* Labels */
+
+        .form-card p label {
+            display: block;
+
+            margin-bottom: 10px;
+
+            font-weight: bold;
+            color: #444;
+            font-size: 15px;
+        }
+
+        /* Inputs */
+
+        .form-card p input,
+        .form-card p select,
+        .form-card p textarea {
+            width: 100%;
+
+            padding: 13px 14px;
+
+            border: 1px solid #ccc;
+            border-radius: 8px;
+
+            font-size: 15px;
+            font-family: Arial, sans-serif;
+
+            background: white;
+        }
+
+        /* Textarea */
+
+        .form-card p textarea {
+            min-height: 130px;
+            resize: vertical;
+        }
+
+        /* Input focus */
+
+        .form-card p input:focus,
+        .form-card p select:focus,
+        .form-card p textarea:focus {
+            outline: none;
+
+            border-color: #c62828;
+
+            box-shadow:
+                0 0 0 2px rgba(198, 40, 40, 0.08);
+        }
+
+        /* Help text */
+
+        .form-card p .helptext {
+            display: block;
+
+            margin-top: 6px;
+
+            color: #888;
+            font-size: 13px;
+        }
+
+        /* Error messages */
+
+        .form-card .errorlist {
+            margin-bottom: 8px;
+            color: #c62828;
+
+            font-size: 14px;
+        }
+
+        /* Submit button */
+
+        .submit-button {
+            width: 100%;
+
+            background: #c62828;
+            color: white;
+
+            border: none;
+
+            padding: 15px;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+            font-weight: bold;
+
+            cursor: pointer;
+
+            margin-top: 5px;
+
+            transition: 0.2s;
+        }
+
+        .submit-button:hover {
+            background: #a91f1f;
+        }
+
+        /* Back button */
+
+        .back-link {
+            display: block;
+
+            text-align: center;
+
+            margin-top: 25px;
+
+            color: #c62828;
+
+            text-decoration: none;
+
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+
+        footer {
+            margin-top: 60px;
+
+            background: #222;
+
+            color: #ccc;
+
+            text-align: center;
+
+            padding: 25px;
+        }
+
+        /* Mobile */
+
+        @media (max-width: 768px) {
+
+            .navbar {
+                padding: 15px 20px;
+
+                flex-direction: column;
+
+                gap: 15px;
+            }
+
+            .nav-links {
+                gap: 15px;
+            }
+
+            .container {
+                margin: 30px auto;
+
+                padding: 0 15px;
+            }
+
+            .page-title h1 {
+                font-size: 30px;
+            }
+
+            .form-card {
+                padding: 25px 20px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- Navbar -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            🩸 BloodConnect 2.0
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/accounts/home/">
+                Dashboard
+            </a>
+
+            <a href="/accounts/my-blood-requests/">
+                My Requests
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- Main Content -->
+
+    <div class="container">
+
+
+        <!-- Page Title -->
+
+        <div class="page-title">
+
+            <h1>
+                Request Blood
+            </h1>
+
+            <p>
+                Submit a blood requirement and provide accurate patient details.
+            </p>
+
+        </div>
+
+
+        <!-- Form Card -->
+
+        <div class="form-card">
+
+
+            <div class="required-note">
+
+                Please enter the correct information.
+                Make sure all required details are accurate.
+
+            </div>
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                {{ form.as_p }}
+
+
+                <button
+                    type="submit"
+                    class="submit-button">
+
+                    Submit Blood Request
+
+                </button>
+
+            </form>
+
+
+            <a
+                href="/accounts/home/"
+                class="back-link">
+
+                ← Back to Dashboard
+
+            </a>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- Footer -->
+
+    <footer>
+
+        <p>
+            © 2026 BloodConnect 2.0 |
+            Connecting Lives Through Blood Donation
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>

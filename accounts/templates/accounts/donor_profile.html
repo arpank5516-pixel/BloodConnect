@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Donor Profile | BloodConnect 2.0</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f6fa;
+            color: #333;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            background: #c62828;
+            color: white;
+            padding: 18px 45px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .dashboard-btn {
+            background: white;
+            color: #c62828;
+
+            text-decoration: none;
+
+            padding: 10px 20px;
+
+            border-radius: 6px;
+
+            font-weight: bold;
+        }
+
+        .dashboard-btn:hover {
+            background: #f5f5f5;
+        }
+
+        /* ================= HEADER ================= */
+
+        .page-header {
+            background: linear-gradient(
+                135deg,
+                #c62828,
+                #e53935
+            );
+
+            color: white;
+
+            text-align: center;
+
+            padding: 55px 20px;
+        }
+
+        .page-header h1 {
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+
+        .page-header p {
+            font-size: 17px;
+        }
+
+        /* ================= CONTAINER ================= */
+
+        .container {
+            max-width: 850px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
+
+        /* ================= SUCCESS MESSAGE ================= */
+
+        .success-message {
+            background: #e8f5e9;
+            color: #198754;
+
+            border-left: 5px solid #198754;
+
+            padding: 15px 18px;
+
+            border-radius: 7px;
+
+            margin-bottom: 25px;
+
+            font-weight: bold;
+        }
+
+        /* ================= FORM CARD ================= */
+
+        .form-card {
+            background: white;
+
+            padding: 40px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-card h2 {
+            color: #c62828;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            color: #777;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        /* ================= FORM ================= */
+
+        .form-card p {
+            margin-bottom: 22px;
+        }
+
+        .form-card label {
+            display: block;
+
+            font-weight: bold;
+
+            margin-bottom: 9px;
+
+            color: #444;
+        }
+
+        .form-card input,
+        .form-card select {
+            width: 100%;
+
+            padding: 13px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 7px;
+
+            font-size: 15px;
+
+            background: white;
+        }
+
+        .form-card input:focus,
+        .form-card select:focus {
+            outline: none;
+
+            border-color: #c62828;
+
+            box-shadow:
+                0 0 0 2px rgba(198, 40, 40, 0.08);
+        }
+
+        /* ================= CHECKBOX ================= */
+
+        .form-card input[type="checkbox"] {
+            width: auto;
+            margin-right: 8px;
+        }
+
+        /* ================= ERRORS ================= */
+
+        .errorlist {
+            color: #c62828;
+
+            margin-bottom: 8px;
+
+            font-size: 14px;
+        }
+
+        /* ================= BUTTON ================= */
+
+        .save-button {
+            width: 100%;
+
+            background: #c62828;
+
+            color: white;
+
+            border: none;
+
+            padding: 15px;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            margin-top: 10px;
+        }
+
+        .save-button:hover {
+            background: #a91f1f;
+        }
+
+        /* ================= BACK LINK ================= */
+
+        .back-link {
+            display: block;
+
+            text-align: center;
+
+            margin-top: 22px;
+
+            color: #c62828;
+
+            text-decoration: none;
+
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            margin-top: 60px;
+
+            background: #222;
+
+            color: #ccc;
+
+            text-align: center;
+
+            padding: 25px;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 15px 20px;
+
+                flex-direction: column;
+
+                gap: 15px;
+            }
+
+            .page-header {
+                padding: 45px 20px;
+            }
+
+            .page-header h1 {
+                font-size: 30px;
+            }
+
+            .form-card {
+                padding: 25px 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            🩸 BloodConnect 2.0
+        </div>
+
+        <a
+            href="/accounts/home/"
+            class="dashboard-btn">
+
+            Dashboard
+
+        </a>
+
+    </nav>
+
+
+    <!-- ================= HEADER ================= -->
+
+    <section class="page-header">
+
+        <h1>
+            Donor Profile
+        </h1>
+
+        <p>
+            Manage your blood donation information and availability.
+        </p>
+
+    </section>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="container">
+
+
+        <!-- ================= SUCCESS MESSAGE ================= -->
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div class="success-message">
+
+                    ✓ {{ message }}
+
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+
+        <!-- ================= FORM CARD ================= -->
+
+        <div class="form-card">
+
+            <h2>
+                Donor Information
+            </h2>
+
+            <p class="description">
+
+                Keep your information updated so that suitable
+                blood requests can find you.
+
+            </p>
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                {{ form.as_p }}
+
+
+                <button
+                    type="submit"
+                    class="save-button">
+
+                    Save Donor Profile
+
+                </button>
+
+            </form>
+
+
+            <a
+                href="/accounts/home/"
+                class="back-link">
+
+                ← Back to Dashboard
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <p>
+            © 2026 BloodConnect 2.0 |
+            Connecting Lives Through Blood Donation
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>
