@@ -48,7 +48,6 @@ def register(request):
             return redirect('login')
 
     else:
-
         form = RegistrationForm()
 
     return render(
@@ -110,11 +109,15 @@ def user_logout(request):
 
 
 # =========================================================
-# HOME / REQUESTER DASHBOARD
+# HOME / DASHBOARD
 # =========================================================
 
 @login_required
 def home(request):
+
+    # Donor ke liye direct matching blood requests
+    if request.user.role == 'donor':
+        return redirect('donor_requests')
 
     total_requests = BloodRequest.objects.filter(
         requester=request.user
@@ -165,6 +168,11 @@ def home(request):
 @login_required
 def profile(request):
 
+    # Agar user donor hai,
+    # to direct Donor Profile form par bhejo
+    if request.user.role == 'donor':
+        return redirect('donor_profile')
+
     donor_profile = DonorProfile.objects.filter(
         donor=request.user
     ).first()
@@ -176,6 +184,7 @@ def profile(request):
             'donor_profile': donor_profile,
         }
     )
+
 
 # =========================================================
 # FIND DONOR
@@ -235,9 +244,13 @@ def request_blood(request):
             )
 
             blood_request.requester = request.user
-            blood_request.status = 'Submitted'
 
-            # Hospital name ke basis par HospitalProfile find karo
+            # Direct donor workflow
+            # Hospital verification is not required
+            blood_request.status = 'Verified'
+
+            # Hospital name ke basis par
+            # HospitalProfile find karo
             hospital_name = form.cleaned_data.get(
                 'hospital_name'
             )
@@ -247,12 +260,15 @@ def request_blood(request):
             ).first()
 
             if hospital_profile:
+
                 blood_request.hospital = hospital_profile
 
             blood_request.save()
 
+            # Request automatically verified
             RequestVerification.objects.create(
-                blood_request=blood_request
+                blood_request=blood_request,
+                status='Verified'
             )
 
             messages.success(
@@ -277,7 +293,10 @@ def request_blood(request):
     )
 
 
-# Compatibility URL
+# =========================================================
+# COMPATIBILITY URL
+# =========================================================
+
 @login_required
 def create_blood_request(request):
 
@@ -408,8 +427,11 @@ def donor_requests(request):
         flat=True
     )
 
+    # Direct matching:
+    # Verified requests bhi donor ko dikhenge
     blood_requests = BloodRequest.objects.filter(
         status__in=[
+            'Verified',
             'Broadcasted',
             'Coordinating'
         ],
@@ -442,6 +464,7 @@ def donor_requests(request):
             'unread_notifications': unread_notifications,
         }
     )
+
 
 # =========================================================
 # DONOR ACCEPT
@@ -476,6 +499,8 @@ def donor_accept(request, request_id):
             'response': 'Accepted'
         }
     )
+    blood_request.status = 'Coordinating'
+    blood_request.save()  
 
     Notification.objects.create(
         recipient=blood_request.requester,
@@ -499,7 +524,10 @@ def donor_accept(request, request_id):
     )
 
 
-# Compatibility URL
+# =========================================================
+# COMPATIBILITY URL
+# =========================================================
+
 @login_required
 def accept_blood_request(request, request_id):
 
@@ -553,7 +581,10 @@ def donor_decline(request, request_id):
     )
 
 
-# Compatibility URL
+# =========================================================
+# COMPATIBILITY URL
+# =========================================================
+
 @login_required
 def reject_blood_request(request, request_id):
 
@@ -561,6 +592,8 @@ def reject_blood_request(request, request_id):
         request,
         request_id
     )
+
+
 @login_required
 def decline_blood_request(request, request_id):
 
@@ -1013,14 +1046,22 @@ def blood_bank_inventory(request):
             'blood_bank_profile': blood_bank_profile,
         }
     )
+
+
+# =========================================================
+# START COORDINATION
+# =========================================================
+
 @login_required
 def start_coordination(request, request_id):
 
     if request.user.role != 'hospital':
+
         messages.error(
             request,
             'Access denied.'
         )
+
         return redirect('home')
 
     hospital_profile = get_object_or_404(
@@ -1040,6 +1081,7 @@ def start_coordination(request, request_id):
     ]:
 
         blood_request.status = 'Coordinating'
+
         blood_request.save()
 
         messages.success(
@@ -1050,14 +1092,22 @@ def start_coordination(request, request_id):
     return redirect(
         'hospital_dashboard'
     )
+
+
+# =========================================================
+# CLOSE BLOOD REQUEST
+# =========================================================
+
 @login_required
 def close_blood_request(request, request_id):
 
     if request.user.role != 'hospital':
+
         messages.error(
             request,
             'Access denied.'
         )
+
         return redirect('home')
 
     hospital_profile = get_object_or_404(
@@ -1072,7 +1122,9 @@ def close_blood_request(request, request_id):
     )
 
     if blood_request.status == 'Coordinating':
+
         blood_request.status = 'Closed'
+
         blood_request.save()
 
         messages.success(
@@ -1083,14 +1135,22 @@ def close_blood_request(request, request_id):
     return redirect(
         'hospital_dashboard'
     )
+
+
+# =========================================================
+# VERIFY BLOOD REQUEST
+# =========================================================
+
 @login_required
 def verify_blood_request(request, request_id):
 
     if request.user.role != 'hospital':
+
         messages.error(
             request,
             'Access denied.'
         )
+
         return redirect('home')
 
     hospital_profile = get_object_or_404(
@@ -1107,10 +1167,13 @@ def verify_blood_request(request, request_id):
     if blood_request.status == 'Submitted':
 
         blood_request.status = 'Verified'
+
         blood_request.save()
 
-        verification, created = RequestVerification.objects.get_or_create(
-            blood_request=blood_request
+        verification, created = (
+            RequestVerification.objects.get_or_create(
+                blood_request=blood_request
+            )
         )
 
         verification.status = 'Verified'
