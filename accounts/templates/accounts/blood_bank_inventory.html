@@ -1,397 +1,557 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Blood Inventory | BloodConnect 2.0</title>
 
     <style>
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        :root {
+            --red: #ff1744;
+            --dark-red: #e3133d;
+            --blue: #2675ff;
+            --navy: #14284b;
+            --text: #243754;
+            --muted: #71809a;
+            --border: #e0e9ff;
+            --surface: #ffffff;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f7fb;
-            color: #1f2937;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f3f6fc;
+            color: var(--text);
+            min-height: 100vh;
         }
 
         .navbar {
-            background: #111827;
-            color: white;
-            padding: 18px 40px;
+            min-height: 72px;
+            background: rgba(255,255,255,0.97);
+            border-bottom: 1px solid #e7ecf7;
+            padding: 15px 4%;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 15px;
+            position: relative;
+            z-index: 2;
         }
 
         .brand {
-            font-size: 22px;
-            font-weight: bold;
+            font-size: 25px;
+            font-weight: 800;
+            color: var(--navy);
+            letter-spacing: -0.8px;
+        }
+
+        .brand span {
+            color: var(--red);
         }
 
         .nav-right {
             display: flex;
-            gap: 20px;
             align-items: center;
+            gap: 12px;
         }
 
         .nav-right a {
-            color: white;
             text-decoration: none;
             font-size: 14px;
+            font-weight: 700;
+            color: var(--blue);
+            background: #edf4ff;
+            padding: 12px 17px;
+            border-radius: 11px;
+            transition: 0.2s;
+        }
+
+        .nav-right a:last-child {
+            background: var(--red);
+            color: white;
+        }
+
+        .nav-right a:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            padding: 48px 7% 45px;
+            background: linear-gradient(115deg, #fff0f4, #f8f9ff 52%, #e8f1ff);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .veins {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.48;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            background: white;
+            border: 1px solid #ffd6e0;
+            color: var(--red);
+            padding: 9px 15px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 4vw, 48px);
+            line-height: 1.12;
+            letter-spacing: -1.5px;
+            color: var(--navy);
+            margin-bottom: 13px;
+        }
+
+        .hero h1 span {
+            color: var(--red);
+        }
+
+        .hero p {
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.8;
         }
 
         .container {
-            max-width: 1100px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .header {
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            font-size: 32px;
-            margin-bottom: 8px;
-        }
-
-        .header p {
-            color: #6b7280;
+            width: 86%;
+            max-width: 1200px;
+            margin: 34px auto 55px;
         }
 
         .card {
-            background: white;
-            border-radius: 16px;
-            padding: 25px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 19px;
+            padding: 27px;
             margin-bottom: 25px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 10px 35px rgba(34, 62, 112, 0.055);
         }
 
-        .card h2 {
-            margin-bottom: 20px;
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 23px;
+        }
+
+        .section-heading h2 {
+            color: var(--navy);
             font-size: 21px;
+            margin-bottom: 8px;
+        }
+
+        .section-heading h2 span {
+            color: var(--blue);
+        }
+
+        .section-heading p {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .heading-line {
+            height: 4px;
+            width: 55px;
+            margin-top: 13px;
+            border-radius: 5px;
+            background: linear-gradient(90deg, var(--red), var(--blue));
         }
 
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr auto;
-            gap: 15px;
+            gap: 18px;
             align-items: end;
         }
 
         .form-group {
             display: flex;
             flex-direction: column;
+            min-width: 0;
         }
 
         .form-group label {
-            margin-bottom: 8px;
-            font-weight: 600;
-            font-size: 14px;
+            margin-bottom: 9px;
+            color: var(--text);
+            font-size: 13px;
+            font-weight: 700;
         }
 
         .form-group select,
         .form-group input {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 15px;
+            min-height: 46px;
+            padding: 12px 14px;
+            border: 1px solid #d9e2f3;
+            border-radius: 10px;
+            background: #fbfcff;
+            color: var(--text);
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(38,117,255,0.1);
         }
 
         .btn {
-            background: #dc2626;
-            color: white;
+            min-height: 46px;
+            padding: 12px 21px;
             border: none;
-            padding: 12px 22px;
-            border-radius: 8px;
+            border-radius: 10px;
+            background: linear-gradient(110deg, var(--red), var(--dark-red));
+            color: white;
+            font-size: 13px;
+            font-weight: 800;
             cursor: pointer;
-            font-size: 15px;
-            font-weight: 600;
+            box-shadow: 0 5px 13px rgba(255,23,68,0.16);
+            transition: 0.2s;
         }
 
         .btn:hover {
-            background: #b91c1c;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(255,23,68,0.23);
+        }
+
+        .messages {
+            margin-bottom: 22px;
+        }
+
+        .message {
+            padding: 14px 17px;
+            border-radius: 11px;
+            margin-bottom: 10px;
+            background: #e4f9ed;
+            border: 1px solid #c5efd7;
+            color: #167345;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .message.error {
+            background: #fff0f2;
+            border-color: #ffd0d8;
+            color: #bd1838;
+        }
+
+        .table-wrap {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid #e8eef9;
+            border-radius: 12px;
         }
 
         .inventory-table {
             width: 100%;
+            min-width: 650px;
             border-collapse: collapse;
         }
 
-        .inventory-table th,
-        .inventory-table td {
-            padding: 15px;
+        .inventory-table th {
+            background: #f3f6ff;
+            color: #60718e;
             text-align: left;
-            border-bottom: 1px solid #e5e7eb;
+            padding: 17px 15px;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            white-space: nowrap;
         }
 
-        .inventory-table th {
-            background: #f9fafb;
-            font-size: 14px;
+        .inventory-table td {
+            padding: 18px 15px;
+            border-bottom: 1px solid #edf1f8;
+            font-size: 13px;
+            color: var(--text);
+        }
+
+        .inventory-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .inventory-table tbody tr:hover {
+            background: #fafbff;
         }
 
         .blood-group {
-            font-weight: bold;
-            color: #dc2626;
-            font-size: 17px;
+            color: var(--red) !important;
+            font-size: 16px !important;
+            font-weight: 800;
         }
 
         .units {
-            font-weight: bold;
+            font-weight: 800;
+            color: var(--navy) !important;
         }
 
         .status {
             display: inline-block;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
+            padding: 7px 12px;
+            border-radius: 25px;
+            font-size: 11px;
+            font-weight: 800;
+            white-space: nowrap;
         }
 
         .available {
-            background: #dcfce7;
-            color: #166534;
+            background: #e1f8eb;
+            color: #14804a;
         }
 
         .low {
-            background: #fef3c7;
-            color: #92400e;
+            background: #fff3d8;
+            color: #9a6500;
         }
 
         .empty {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        .message {
-            padding: 12px 16px;
-            border-radius: 8px;
-            background: #dcfce7;
-            color: #166534;
-            margin-bottom: 20px;
+            background: #ffe5e9;
+            color: #c51d3c;
         }
 
         .empty-message {
             text-align: center;
-            padding: 30px;
-            color: #6b7280;
+            padding: 42px 15px;
+            color: var(--muted);
+            background: #f8faff;
+            border: 1px dashed #d9e4f8;
+            border-radius: 13px;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--muted);
+            font-size: 12px;
         }
 
         @media (max-width: 768px) {
-
             .navbar {
-                padding: 15px 20px;
+                padding: 15px 5%;
+            }
+
+            .brand {
+                font-size: 20px;
+            }
+
+            .nav-right {
+                gap: 7px;
+            }
+
+            .nav-right a {
+                padding: 10px;
+                font-size: 12px;
+            }
+
+            .hero {
+                padding: 38px 6%;
             }
 
             .container {
-                margin: 25px auto;
+                width: 92%;
+                margin-top: 24px;
+            }
+
+            .card {
+                padding: 20px 16px;
+                border-radius: 15px;
             }
 
             .form-row {
                 grid-template-columns: 1fr;
             }
 
-            .inventory-table {
-                display: block;
-                overflow-x: auto;
+            .btn {
+                width: 100%;
             }
-
         }
 
+        @media (max-width: 420px) {
+            .navbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .nav-right {
+                width: 100%;
+            }
+
+            .nav-right a {
+                text-align: center;
+                flex: 1;
+            }
+        }
     </style>
 </head>
 
 <body>
 
     <nav class="navbar">
-
-        <div class="brand">
-            BloodConnect 2.0
-        </div>
+        <div class="brand">♥ BloodConnect <span>2.0</span></div>
 
         <div class="nav-right">
-
-            <a href="{% url 'blood_bank_dashboard' %}">
-                Dashboard
-            </a>
-
-            <a href="{% url 'logout' %}">
-                Logout
-            </a>
-
+            <a href="{% url 'blood_bank_dashboard' %}">Dashboard</a>
+            <a href="{% url 'logout' %}">Logout</a>
         </div>
-
     </nav>
 
+    <section class="hero">
+        <svg class="veins" viewBox="0 0 1440 300" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M-30 100 C250 180 350 20 650 90 S1100 170 1480 45"
+                  fill="none" stroke="#ff1744" stroke-width="1.2"/>
+            <path d="M-30 150 C250 60 500 230 800 130 S1200 70 1480 180"
+                  fill="none" stroke="#2675ff" stroke-width="1.1"/>
+            <path d="M-30 240 C250 130 500 280 800 210 S1200 250 1480 130"
+                  fill="none" stroke="#ff1744" stroke-width="0.9"/>
+        </svg>
 
-    <div class="container">
-
-        <div class="header">
-
-            <h1>Blood Inventory</h1>
-
+        <div class="hero-content">
+            <div class="eyebrow">♥ &nbsp; EVERY DROP COUNTS</div>
+            <h1>Blood <span>Inventory</span><br>Every Unit Can Save a Life.</h1>
             <p>
-                Manage available blood units for
-                {{ blood_bank_profile.blood_bank_name }}.
+                Manage your blood stock, update available units and help hospitals
+                find the blood they need.
             </p>
-
         </div>
+    </section>
 
+    <main class="container">
 
         {% if messages %}
-
-            {% for message in messages %}
-
-                <div class="message">
-                    {{ message }}
-                </div>
-
-            {% endfor %}
-
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message{% if 'error' in message.tags %} error{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
         {% endif %}
 
-
-        <div class="card">
-
-            <h2>Update Blood Stock</h2>
+        <section class="card">
+            <div class="section-heading">
+                <div>
+                    <h2>Update Blood <span>Stock</span></h2>
+                    <p>
+                        {% if blood_bank_profile %}
+                            Update inventory for {{ blood_bank_profile.blood_bank_name }}.
+                        {% else %}
+                            Select a blood group and enter the available units.
+                        {% endif %}
+                    </p>
+                    <div class="heading-line"></div>
+                </div>
+            </div>
 
             <form method="POST">
-
                 {% csrf_token %}
 
                 <div class="form-row">
-
                     <div class="form-group">
-
-                        <label for="{{ form.blood_group.id_for_label }}">
-                            Blood Group
-                        </label>
-
+                        <label for="{{ form.blood_group.id_for_label }}">Blood Group</label>
                         {{ form.blood_group }}
-
                     </div>
-
 
                     <div class="form-group">
-
-                        <label for="{{ form.available_units.id_for_label }}">
-                            Available Units
-                        </label>
-
+                        <label for="{{ form.available_units.id_for_label }}">Available Units</label>
                         {{ form.available_units }}
-
                     </div>
-
 
                     <div>
-
-                        <button type="submit" class="btn">
-                            Update Stock
-                        </button>
-
+                        <button type="submit" class="btn">Update Stock →</button>
                     </div>
-
                 </div>
-
             </form>
+        </section>
 
-        </div>
-
-
-        <div class="card">
-
-            <h2>Current Blood Stock</h2>
+        <section class="card">
+            <div class="section-heading">
+                <div>
+                    <h2>Current Blood <span>Stock</span></h2>
+                    <p>Review the availability and status of each blood group.</p>
+                    <div class="heading-line"></div>
+                </div>
+            </div>
 
             {% if inventory %}
-
-                <table class="inventory-table">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>Blood Group</th>
-
-                            <th>Available Units</th>
-
-                            <th>Status</th>
-
-                            <th>Last Updated</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        {% for item in inventory %}
-
+                <div class="table-wrap">
+                    <table class="inventory-table">
+                        <thead>
                             <tr>
-
-                                <td class="blood-group">
-                                    {{ item.blood_group }}
-                                </td>
-
-                                <td class="units">
-                                    {{ item.available_units }} units
-                                </td>
-
-                                <td>
-
-                                    {% if item.available_units == 0 %}
-
-                                        <span class="status empty">
-                                            Out of Stock
-                                        </span>
-
-                                    {% elif item.available_units <= 5 %}
-
-                                        <span class="status low">
-                                            Low Stock
-                                        </span>
-
-                                    {% else %}
-
-                                        <span class="status available">
-                                            Available
-                                        </span>
-
-                                    {% endif %}
-
-                                </td>
-
-                                <td>
-                                    {{ item.last_updated|date:"d M Y, h:i A" }}
-                                </td>
-
+                                <th>Blood Group</th>
+                                <th>Available Units</th>
+                                <th>Status</th>
+                                <th>Last Updated</th>
                             </tr>
+                        </thead>
 
-                        {% endfor %}
+                        <tbody>
+                            {% for item in inventory %}
+                                <tr>
+                                    <td class="blood-group">{{ item.blood_group }}</td>
 
-                    </tbody>
+                                    <td class="units">{{ item.available_units }} units</td>
 
-                </table>
+                                    <td>
+                                        {% if item.available_units == 0 %}
+                                            <span class="status empty">Out of Stock</span>
+                                        {% elif item.available_units <= 5 %}
+                                            <span class="status low">Low Stock</span>
+                                        {% else %}
+                                            <span class="status available">Available</span>
+                                        {% endif %}
+                                    </td>
 
-            {% else %}
-
-                <div class="empty-message">
-
-                    No blood inventory has been added yet.
-
+                                    <td>{{ item.last_updated|date:"d M Y, h:i A" }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
-
+            {% else %}
+                <div class="empty-message">
+                    No blood inventory has been added yet.
+                </div>
             {% endif %}
+        </section>
 
-        </div>
+    </main>
 
-    </div>
+    <footer class="footer">
+        BloodConnect 2.0 &nbsp; | &nbsp; Every Drop Counts. Every Life Matters.
+    </footer>
 
 </body>
 </html>
+```

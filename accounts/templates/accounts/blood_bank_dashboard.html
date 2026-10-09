@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Blood Bank Dashboard | BloodConnect 2.0</title>
 
     <style>
+        :root {
+            --red: #f21d45;
+            --red-dark: #cf1738;
+            --blue: #1769e8;
+            --navy: #142747;
+            --muted: #71809b;
+            --page: #f4f7fc;
+            --line: #e2eaff;
+            --white: #fff;
+        }
 
         * {
             box-sizing: border-box;
@@ -18,201 +24,354 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #f4f7fb;
-            color: #172033;
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--navy);
+            background: var(--page);
+            line-height: 1.6;
         }
 
-        /* ================= NAVBAR ================= */
+        a {
+            text-decoration: none;
+        }
 
         .navbar {
-            background: #ffffff;
-            padding: 18px 7%;
+            min-height: 76px;
+            padding: 15px 6%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            gap: 20px;
+            background: rgba(255,255,255,.97);
+            border-bottom: 1px solid var(--line);
+            position: relative;
+            z-index: 2;
         }
 
         .logo {
-            font-size: 24px;
-            font-weight: 700;
-            color: #e63946;
+            font-size: 25px;
+            font-weight: 800;
+            color: var(--navy);
+            letter-spacing: -.7px;
+        }
+
+        .logo span {
+            color: var(--red);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
         }
 
         .welcome {
+            color: var(--muted);
             font-size: 14px;
-            color: #555;
+            margin-right: 8px;
         }
 
-        /* ================= CONTAINER ================= */
+        .nav-btn {
+            display: inline-block;
+            padding: 10px 17px;
+            border-radius: 10px;
+            background: #edf4ff;
+            color: var(--blue);
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .logout-btn {
+            background: var(--red);
+            color: white;
+        }
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            padding: 55px 6% 60px;
+            background:
+                radial-gradient(ellipse at 90% 5%, #cfe2ff 0%, transparent 43%),
+                linear-gradient(115deg, #fff0f3 0%, #f8f9ff 55%, #edf5ff 100%);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .hero::before,
+        .hero::after {
+            content: "";
+            position: absolute;
+            left: -5%;
+            width: 110%;
+            height: 100px;
+            border: 1px solid rgba(242,29,69,.34);
+            border-radius: 50%;
+            transform: rotate(-4deg);
+            pointer-events: none;
+        }
+
+        .hero::before {
+            top: 35px;
+        }
+
+        .hero::after {
+            top: 100px;
+            border-color: rgba(23,105,232,.3);
+            transform: rotate(3deg);
+        }
+
+        .hero-content {
+            max-width: 1250px;
+            margin: auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            padding: 7px 14px;
+            margin-bottom: 17px;
+            border: 1px solid #ffd1dc;
+            border-radius: 30px;
+            background: rgba(255,255,255,.8);
+            color: var(--red);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+        }
+
+        .hero h1 {
+            max-width: 900px;
+            font-size: clamp(32px, 4vw, 51px);
+            line-height: 1.13;
+            letter-spacing: -1.5px;
+            margin-bottom: 15px;
+        }
+
+        .hero h1 span {
+            color: var(--red);
+        }
+
+        .hero p {
+            max-width: 680px;
+            color: #61718d;
+            font-size: 16px;
+        }
 
         .container {
-            width: 86%;
+            width: 88%;
             max-width: 1250px;
-            margin: 35px auto;
+            margin: 35px auto 60px;
         }
 
-        /* ================= HEADER ================= */
-
-        .header {
-            margin-bottom: 25px;
+        .section-heading {
+            margin-bottom: 18px;
         }
 
-        .header h1 {
-            font-size: 30px;
-            margin-bottom: 8px;
+        .section-heading h2 {
+            font-size: 25px;
+            letter-spacing: -.5px;
+            line-height: 1.3;
         }
 
-        .header p {
-            color: #666;
+        .section-heading h2 span {
+            color: var(--blue);
         }
 
-        /* ================= CARD ================= */
+        .section-heading p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .accent-line {
+            height: 4px;
+            width: 55px;
+            margin-top: 12px;
+            border-radius: 5px;
+            background: linear-gradient(90deg, var(--red), var(--blue));
+        }
 
         .card {
-            background: #ffffff;
-            border-radius: 16px;
+            background: var(--white);
+            border: 1px solid var(--line);
+            border-radius: 17px;
             padding: 25px;
             margin-bottom: 25px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 32px rgba(24,48,90,.045);
+            min-width: 0;
         }
 
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            flex-wrap: wrap;
             gap: 15px;
+            margin-bottom: 20px;
         }
 
         .card-header h2 {
-            font-size: 22px;
+            font-size: 21px;
         }
 
-        /* ================= BUTTON ================= */
-
         .btn {
-            text-decoration: none;
-            background: #e63946;
+            display: inline-block;
+            padding: 10px 17px;
+            border: none;
+            border-radius: 9px;
+            background: var(--red);
             color: white;
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background .2s, transform .2s;
         }
 
         .btn:hover {
-            background: #c92f3b;
+            background: var(--red-dark);
+            transform: translateY(-1px);
         }
-
-        /* ================= PROFILE ================= */
 
         .profile-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
         }
 
-        .profile-item {
-            background: #f8fafc;
-            padding: 16px;
-            border-radius: 10px;
+        .profile-item,
+        .inventory-card {
+            min-width: 0;
+            background: linear-gradient(135deg, #fff8fa, #f3f7ff);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 17px;
         }
 
         .profile-item small {
             display: block;
-            color: #777;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .5px;
+            text-transform: uppercase;
             margin-bottom: 6px;
         }
 
         .profile-item strong {
-            font-size: 15px;
+            display: block;
+            font-size: 14px;
+            overflow-wrap: anywhere;
         }
-
-        /* ================= INVENTORY ================= */
 
         .inventory-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 18px;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 15px;
         }
 
         .inventory-card {
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid #edf0f5;
+            position: relative;
+            overflow: hidden;
+            background: #f7f9ff;
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        .inventory-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 22px rgba(24,48,90,.08);
+        }
+
+        .inventory-card::before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--red), var(--blue));
         }
 
         .blood-group {
-            font-size: 25px;
-            font-weight: 700;
-            color: #e63946;
-            margin-bottom: 8px;
+            margin-top: 3px;
+            color: var(--red);
+            font-size: 27px;
+            font-weight: 800;
         }
 
         .units {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 8px;
+            font-size: 19px;
+            font-weight: 700;
+            margin: 5px 0 12px;
         }
 
         .status {
             display: inline-block;
             padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 700;
         }
 
         .available {
-            background: #dcfce7;
-            color: #166534;
+            background: #e3f8ec;
+            color: #14804a;
         }
 
         .low {
-            background: #fef3c7;
-            color: #92400e;
+            background: #fff3d7;
+            color: #9a6200;
         }
 
         .out {
-            background: #fee2e2;
-            color: #991b1b;
+            background: #ffe6eb;
+            color: #bf1738;
         }
 
-        /* ================= TABLE ================= */
-
         .table-wrapper {
+            width: 100%;
             overflow-x: auto;
+            border: 1px solid var(--line);
+            border-radius: 12px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 900px;
         }
 
-        th,
-        td {
-            padding: 15px 14px;
+        th, td {
+            padding: 14px;
             text-align: left;
-            border-bottom: 1px solid #edf0f5;
+            border-bottom: 1px solid #edf1f8;
             white-space: nowrap;
         }
 
         th {
-            background: #f8fafc;
-            font-size: 13px;
-            color: #26344d;
+            background: #f3f7ff;
+            color: #536582;
+            font-size: 11px;
+            letter-spacing: .45px;
+            text-transform: uppercase;
         }
 
         td {
-            font-size: 14px;
+            font-size: 13px;
+        }
+
+        tbody tr:hover {
+            background: #fafbff;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
         }
 
         .request-blood {
-            color: #e63946;
-            font-weight: 700;
+            color: var(--red);
+            font-weight: 800;
         }
 
         .stock-number {
@@ -220,78 +379,105 @@
         }
 
         .stock-ok {
-            color: #15803d;
+            color: #14804a;
             font-weight: 700;
         }
 
         .stock-low {
-            color: #d97706;
+            color: #b87500;
             font-weight: 700;
         }
 
         .stock-none {
-            color: #dc2626;
+            color: #d21d40;
             font-weight: 700;
         }
 
         .request-status {
             display: inline-block;
-            padding: 6px 12px;
-            border-radius: 20px;
-            background: #e0ecff;
-            color: #2456a6;
-            font-size: 12px;
-            font-weight: 600;
+            padding: 6px 10px;
+            border-radius: 30px;
+            background: #eaf2ff;
+            color: #245ab0;
+            font-size: 11px;
+            font-weight: 700;
         }
 
-        /* ================= URGENCY ================= */
-
         .urgency {
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .emergency {
-            color: #dc2626;
+            color: #d21d40;
         }
 
         .urgent {
-            color: #d97706;
+            color: #b87500;
         }
 
         .normal {
-            color: #15803d;
+            color: #14804a;
         }
-
-        /* ================= EMPTY ================= */
 
         .empty {
+            padding: 30px 18px;
+            border-radius: 12px;
+            background: #f6f8fd;
+            color: var(--muted);
             text-align: center;
-            padding: 30px;
-            color: #777;
+            font-size: 14px;
         }
 
-        /* ================= RESPONSIVE ================= */
+        footer {
+            padding: 25px 6%;
+            background: #142747;
+            color: #d6e0f2;
+            text-align: center;
+            font-size: 13px;
+        }
 
-        @media (max-width: 900px) {
+        footer span {
+            color: #ff6682;
+            font-weight: 700;
+        }
+
+        @media (max-width: 950px) {
+            .inventory-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
 
             .profile-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
-
-            .inventory-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
         }
 
         @media (max-width: 600px) {
+            .navbar {
+                padding: 15px 5%;
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .nav-actions {
+                width: 100%;
+            }
+
+            .hero {
+                padding: 42px 5%;
+            }
+
+            .hero h1 {
+                font-size: 34px;
+            }
 
             .container {
                 width: 92%;
+                margin-top: 25px;
             }
 
-            .navbar {
-                padding: 16px 4%;
+            .card {
+                padding: 18px;
+                border-radius: 13px;
             }
 
             .profile-grid,
@@ -299,515 +485,214 @@
                 grid-template-columns: 1fr;
             }
 
-            .card {
-                padding: 18px;
-            }
-
             .card-header {
                 align-items: flex-start;
-                flex-direction: column;
             }
 
-            .header h1 {
-                font-size: 25px;
+            .section-heading h2 {
+                font-size: 22px;
             }
-
         }
 
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                transition: none !important;
+            }
+        }
     </style>
-
 </head>
-
 
 <body>
 
-
-    <!-- ================= NAVBAR ================= -->
-
     <nav class="navbar">
+        <div class="logo">♥ BloodConnect <span>2.0</span></div>
 
-        <div class="logo">
-            BloodConnect 2.0
+        <div class="nav-actions">
+            <span class="welcome">Welcome, {{ request.user.username }}</span>
+            <a class="nav-btn" href="{% url 'home' %}">Dashboard</a>
+            <a class="nav-btn logout-btn" href="{% url 'logout' %}">Logout</a>
         </div>
-
-        <div class="welcome">
-            Welcome, {{ request.user.username }}
-        </div>
-
     </nav>
 
+    <section class="hero">
+        <div class="hero-content">
+            <div class="eyebrow">♥ &nbsp; EVERY DROP COUNTS</div>
+            <h1>Blood Bank <span>Dashboard.</span><br>Every Unit Can Save a Life.</h1>
+            <p>Manage your blood inventory, monitor available stock and review blood requests in one place.</p>
+        </div>
+    </section>
 
     <main class="container">
 
-
-        <!-- ================= HEADER ================= -->
-
-        <div class="header">
-
-            <h1>
-                Blood Bank Dashboard
-            </h1>
-
-            <p>
-                Manage blood inventory and monitor active blood requests.
-            </p>
-
-        </div>
-
-
-        <!-- ================= BLOOD BANK PROFILE ================= -->
-
-        <div class="card">
-
+        <section class="card">
             <div class="card-header">
-
-                <h2>
-                    Blood Bank Profile
-                </h2>
-
+                <div class="section-heading">
+                    <h2>Blood Bank <span>Profile</span></h2>
+                    <p>Your registered blood bank information.</p>
+                    <div class="accent-line"></div>
+                </div>
             </div>
-
 
             {% if blood_bank_profile %}
+                <div class="profile-grid">
+                    <div class="profile-item">
+                        <small>Blood Bank Name</small>
+                        <strong>{{ blood_bank_profile.blood_bank_name }}</strong>
+                    </div>
 
-            <div class="profile-grid">
+                    <div class="profile-item">
+                        <small>Registration Number</small>
+                        <strong>{{ blood_bank_profile.registration_number|default:"Not Available" }}</strong>
+                    </div>
 
+                    <div class="profile-item">
+                        <small>Verification Status</small>
+                        <strong>{{ blood_bank_profile.verification_status }}</strong>
+                    </div>
 
-                <div class="profile-item">
+                    <div class="profile-item">
+                        <small>Address</small>
+                        <strong>{{ blood_bank_profile.address|default:"Not Available" }}</strong>
+                    </div>
 
-                    <small>
-                        Blood Bank Name
-                    </small>
+                    <div class="profile-item">
+                        <small>City</small>
+                        <strong>{{ blood_bank_profile.city|default:"Not Available" }}</strong>
+                    </div>
 
-                    <strong>
-                        {{ blood_bank_profile.blood_bank_name }}
-                    </strong>
-
+                    <div class="profile-item">
+                        <small>Contact</small>
+                        <strong>{{ blood_bank_profile.contact_number|default:"Not Available" }}</strong>
+                    </div>
                 </div>
-
-
-                <div class="profile-item">
-
-                    <small>
-                        Registration Number
-                    </small>
-
-                    <strong>
-                        {{ blood_bank_profile.registration_number|default:"Not Available" }}
-                    </strong>
-
-                </div>
-
-
-                <div class="profile-item">
-
-                    <small>
-                        Verification Status
-                    </small>
-
-                    <strong>
-                        {{ blood_bank_profile.verification_status }}
-                    </strong>
-
-                </div>
-
-
-                <div class="profile-item">
-
-                    <small>
-                        Address
-                    </small>
-
-                    <strong>
-                        {{ blood_bank_profile.address }}
-                    </strong>
-
-                </div>
-
-
-                <div class="profile-item">
-
-                    <small>
-                        City
-                    </small>
-
-                    <strong>
-                        {{ blood_bank_profile.city }}
-                    </strong>
-
-                </div>
-
-
-                <div class="profile-item">
-
-                    <small>
-                        Contact
-                    </small>
-
-                    <strong>
-                        {{ blood_bank_profile.contact_number }}
-                    </strong>
-
-                </div>
-
-
-            </div>
-
-
             {% else %}
-
-            <div class="empty">
-
-                Blood bank profile not found.
-
-            </div>
-
+                <div class="empty">Blood bank profile not found.</div>
             {% endif %}
+        </section>
 
-
-        </div>
-
-
-        <!-- ================= BLOOD INVENTORY ================= -->
-
-        <div class="card">
-
-
+        <section class="card">
             <div class="card-header">
+                <div class="section-heading">
+                    <h2>Blood <span>Inventory</span></h2>
+                    <p>Review the current stock for each blood group.</p>
+                    <div class="accent-line"></div>
+                </div>
 
-                <h2>
-                    Blood Inventory
-                </h2>
-
-
-                <a
-                    href="{% url 'blood_bank_inventory' %}"
-                    class="btn"
-                >
-                    Manage Inventory
-                </a>
-
+                <a href="{% url 'blood_bank_inventory' %}" class="btn">Manage Inventory →</a>
             </div>
-
 
             {% if inventory %}
+                <div class="inventory-grid">
+                    {% for item in inventory %}
+                        <div class="inventory-card">
+                            <div class="blood-group">{{ item.blood_group }}</div>
+                            <div class="units">{{ item.available_units }} Units</div>
 
-
-            <div class="inventory-grid">
-
-
-                {% for item in inventory %}
-
-
-                <div class="inventory-card">
-
-
-                    <div class="blood-group">
-                        {{ item.blood_group }}
-                    </div>
-
-
-                    <div class="units">
-                        {{ item.available_units }} Units
-                    </div>
-
-
-                    {% if item.available_units == 0 %}
-
-                    <span class="status out">
-                        Out of Stock
-                    </span>
-
-
-                    {% elif item.available_units <= 5 %}
-
-                    <span class="status low">
-                        Low Stock
-                    </span>
-
-
-                    {% else %}
-
-                    <span class="status available">
-                        Available
-                    </span>
-
-                    {% endif %}
-
-
+                            {% if item.available_units == 0 %}
+                                <span class="status out">Out of Stock</span>
+                            {% elif item.available_units <= 5 %}
+                                <span class="status low">Low Stock</span>
+                            {% else %}
+                                <span class="status available">Available</span>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
                 </div>
-
-
-                {% endfor %}
-
-
-            </div>
-
-
             {% else %}
-
-            <div class="empty">
-
-                No blood inventory added yet.
-
-            </div>
-
+                <div class="empty">No blood inventory added yet. Use Manage Inventory to update your stock.</div>
             {% endif %}
+        </section>
 
-
-        </div>
-
-
-        <!-- ================= BLOOD REQUESTS ================= -->
-
-        <div class="card">
-
-
+        <section class="card">
             <div class="card-header">
-
-                <h2>
-                    Blood Requests
-                </h2>
-
+                <div class="section-heading">
+                    <h2>Blood <span>Requests</span></h2>
+                    <p>Compare blood requirements with the available inventory.</p>
+                    <div class="accent-line"></div>
+                </div>
             </div>
-
 
             {% if blood_requests %}
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Patient</th>
+                                <th>Blood Group</th>
+                                <th>Requested Units</th>
+                                <th>Available Stock</th>
+                                <th>Stock Status</th>
+                                <th>Hospital</th>
+                                <th>Urgency</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                            </tr>
+                        </thead>
 
+                        <tbody>
+                            {% for blood_request in blood_requests %}
+                                <tr>
+                                    <td>{{ blood_request.patient_name }}</td>
+                                    <td class="request-blood">{{ blood_request.blood_group }}</td>
+                                    <td>{{ blood_request.units_required }}</td>
 
-            <div class="table-wrapper">
+                                    <td class="stock-number">
+                                        {% for item in inventory %}
+                                            {% if item.blood_group == blood_request.blood_group %}
+                                                {{ item.available_units }}
+                                            {% endif %}
+                                        {% empty %}
+                                            0
+                                        {% endfor %}
+                                    </td>
 
+                                    <td>
+                                        {% for item in inventory %}
+                                            {% if item.blood_group == blood_request.blood_group %}
+                                                {% if item.available_units >= blood_request.units_required %}
+                                                    <span class="stock-ok">Available</span>
+                                                {% elif item.available_units > 0 %}
+                                                    <span class="stock-low">Partial Stock</span>
+                                                {% else %}
+                                                    <span class="stock-none">Out of Stock</span>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% empty %}
+                                            <span class="stock-none">Out of Stock</span>
+                                        {% endfor %}
+                                    </td>
 
-                <table>
-
-
-                    <thead>
-
-                        <tr>
-
-                            <th>
-                                Patient
-                            </th>
-
-                            <th>
-                                Blood Group
-                            </th>
-
-                            <th>
-                                Requested Units
-                            </th>
-
-                            <th>
-                                Available Stock
-                            </th>
-
-                            <th>
-                                Stock Status
-                            </th>
-
-                            <th>
-                                Hospital
-                            </th>
-
-                            <th>
-                                Urgency
-                            </th>
-
-                            <th>
-                                Status
-                            </th>
-
-                            <th>
-                                Created
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody>
-
-
-                        {% for blood_request in blood_requests %}
-
-
-                        <tr>
-
-
-                            <td>
-                                {{ blood_request.patient_name }}
-                            </td>
-
-
-                            <td class="request-blood">
-                                {{ blood_request.blood_group }}
-                            </td>
-
-
-                            <td>
-                                {{ blood_request.units_required }}
-                            </td>
-
-
-                            <!-- AVAILABLE STOCK -->
-
-                            <td class="stock-number">
-
-                                {% for item in inventory %}
-
-                                    {% if item.blood_group == blood_request.blood_group %}
-
-                                        {{ item.available_units }}
-
-                                    {% endif %}
-
-                                {% empty %}
-
-                                    0
-
-                                {% endfor %}
-
-                            </td>
-
-
-                            <!-- STOCK STATUS -->
-
-                            <td>
-
-                                {% for item in inventory %}
-
-                                    {% if item.blood_group == blood_request.blood_group %}
-
-
-                                        {% if item.available_units >= blood_request.units_required %}
-
-                                            <span class="stock-ok">
-                                                Available
-                                            </span>
-
-
-                                        {% elif item.available_units > 0 %}
-
-                                            <span class="stock-low">
-                                                Partial Stock
-                                            </span>
-
-
+                                    <td>
+                                        {% if blood_request.hospital %}
+                                            {{ blood_request.hospital.hospital_name }}
                                         {% else %}
-
-                                            <span class="stock-none">
-                                                Out of Stock
-                                            </span>
-
+                                            {{ blood_request.hospital_name }}
                                         {% endif %}
+                                    </td>
 
+                                    <td>
+                                        <span class="urgency {% if blood_request.urgency == 'Emergency' %}emergency{% elif blood_request.urgency == 'Urgent' %}urgent{% else %}normal{% endif %}">
+                                            {{ blood_request.urgency }}
+                                        </span>
+                                    </td>
 
-                                    {% endif %}
-
-                                {% empty %}
-
-                                    <span class="stock-none">
-                                        Out of Stock
-                                    </span>
-
-                                {% endfor %}
-
-                            </td>
-
-
-                            <!-- HOSPITAL -->
-
-                            <td>
-
-                                {% if blood_request.hospital %}
-
-                                    {{ blood_request.hospital.hospital_name }}
-
-                                {% else %}
-
-                                    {{ blood_request.hospital_name }}
-
-                                {% endif %}
-
-                            </td>
-
-
-                            <!-- URGENCY -->
-
-                            <td>
-
-                                <span class="urgency
-                                    {% if blood_request.urgency == 'Emergency' %}
-                                        emergency
-                                    {% elif blood_request.urgency == 'Urgent' %}
-                                        urgent
-                                    {% else %}
-                                        normal
-                                    {% endif %}
-                                ">
-
-                                    {{ blood_request.urgency }}
-
-                                </span>
-
-                            </td>
-
-
-                            <!-- STATUS -->
-
-                            <td>
-
-                                <span class="request-status">
-
-                                    {{ blood_request.status }}
-
-                                </span>
-
-                            </td>
-
-
-                            <!-- CREATED -->
-
-                            <td>
-
-                                {{ blood_request.created_at|date:"d M Y" }}
-
-                            </td>
-
-
-                        </tr>
-
-
-                        {% endfor %}
-
-
-                    </tbody>
-
-
-                </table>
-
-
-            </div>
-
-
+                                    <td><span class="request-status">{{ blood_request.status }}</span></td>
+                                    <td>{{ blood_request.created_at|date:"d M Y" }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             {% else %}
-
-            <div class="empty">
-
-                No active blood requests available.
-
-            </div>
-
+                <div class="empty">No active blood requests available.</div>
             {% endif %}
-
-
-        </div>
-
+        </section>
 
     </main>
 
+    <footer>
+        © 2026 <span>BloodConnect 2.0</span> | Connecting Lives Through Blood Donation
+    </footer>
 
 </body>
-
 </html>

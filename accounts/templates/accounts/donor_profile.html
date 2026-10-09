@@ -1,14 +1,22 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Donor Profile | BloodConnect 2.0</title>
 
     <style>
+        :root {
+            --red: #ed1738;
+            --red-dark: #c91030;
+            --blue: #1265d8;
+            --navy: #132747;
+            --muted: #71819a;
+            --bg: #f6f8fc;
+            --border: #e3eafa;
+            --green: #16845b;
+        }
 
         * {
             box-sizing: border-box;
@@ -17,388 +25,448 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f6fa;
-            color: #333;
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--navy);
+            background: var(--bg);
         }
 
-        /* ================= NAVBAR ================= */
+        a { text-decoration: none; }
 
         .navbar {
-            background: #c62828;
-            color: white;
-            padding: 18px 45px;
-
+            min-height: 76px;
+            padding: 15px 6%;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 18px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(20, 50, 100, .04);
         }
 
         .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--navy);
             font-size: 25px;
-            font-weight: bold;
+            font-weight: 800;
+            letter-spacing: -.7px;
         }
 
+        .logo-icon {
+            color: var(--red);
+            font-size: 30px;
+        }
+
+        .logo span { color: var(--red); }
+
         .dashboard-btn {
-            background: white;
-            color: #c62828;
-
-            text-decoration: none;
-
-            padding: 10px 20px;
-
-            border-radius: 6px;
-
-            font-weight: bold;
+            padding: 12px 19px;
+            border-radius: 9px;
+            color: white;
+            background: var(--red);
+            font-size: 13px;
+            font-weight: 800;
+            box-shadow: 0 6px 15px rgba(237, 23, 56, .15);
+            transition: .2s;
         }
 
         .dashboard-btn:hover {
-            background: #f5f5f5;
+            background: var(--red-dark);
+            transform: translateY(-1px);
         }
 
-        /* ================= HEADER ================= */
-
-        .page-header {
-            background: linear-gradient(
-                135deg,
-                #c62828,
-                #e53935
-            );
-
-            color: white;
-
-            text-align: center;
-
-            padding: 55px 20px;
+        .hero {
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(ellipse at 85% 15%, rgba(40,130,255,.20), transparent 38%),
+                linear-gradient(120deg, #fff0f3, #f6f9ff 55%, #eaf3ff);
+            border-bottom: 1px solid var(--border);
         }
 
-        .page-header h1 {
-            font-size: 38px;
-            margin-bottom: 12px;
+        .veins {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: .38;
+            pointer-events: none;
         }
 
-        .page-header p {
-            font-size: 17px;
+        .hero-content {
+            position: relative;
+            width: 88%;
+            max-width: 1100px;
+            margin: auto;
+            padding: 43px 0 45px;
         }
 
-        /* ================= CONTAINER ================= */
+        .eyebrow {
+            display: inline-block;
+            padding: 9px 14px;
+            border: 1px solid #ffd4dc;
+            border-radius: 30px;
+            background: rgba(255,255,255,.85);
+            color: var(--red);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .hero h1 {
+            margin: 18px 0 12px;
+            font-size: clamp(34px, 4.2vw, 49px);
+            line-height: 1.12;
+            letter-spacing: -1.5px;
+            font-weight: 900;
+        }
+
+        .red { color: var(--red); }
+        .blue { color: var(--blue); }
+
+        .hero p {
+            max-width: 680px;
+            color: #536782;
+            font-size: 15px;
+            line-height: 1.8;
+        }
 
         .container {
+            width: 88%;
             max-width: 850px;
-            margin: 45px auto;
-            padding: 0 20px;
+            margin: 34px auto 50px;
         }
-
-        /* ================= SUCCESS MESSAGE ================= */
 
         .success-message {
-            background: #e8f5e9;
-            color: #198754;
-
-            border-left: 5px solid #198754;
-
             padding: 15px 18px;
-
-            border-radius: 7px;
-
-            margin-bottom: 25px;
-
-            font-weight: bold;
+            margin-bottom: 18px;
+            border: 1px solid #c9edda;
+            border-left: 4px solid var(--green);
+            border-radius: 10px;
+            color: #116d49;
+            background: #effbf4;
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
         }
-
-        /* ================= FORM CARD ================= */
 
         .form-card {
+            overflow: hidden;
+            border: 1px solid var(--border);
+            border-radius: 18px;
             background: white;
-
-            padding: 40px;
-
-            border-radius: 15px;
-
-            box-shadow:
-                0 8px 30px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 10px 32px rgba(25, 61, 112, .06);
         }
 
-        .form-card h2 {
-            color: #c62828;
-            margin-bottom: 10px;
+        .card-heading {
+            padding: 26px 30px;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(115deg, #fff7f9, #f3f7ff);
         }
 
-        .description {
-            color: #777;
-            margin-bottom: 30px;
-            line-height: 1.5;
+        .card-heading h2 {
+            font-size: 24px;
+            letter-spacing: -.5px;
         }
 
-        /* ================= FORM ================= */
-
-        .form-card p {
-            margin-bottom: 22px;
+        .card-heading p {
+            margin-top: 9px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.7;
         }
 
-        .form-card label {
+        .heading-line {
+            width: 55px;
+            height: 4px;
+            margin-top: 13px;
+            border-radius: 10px;
+            background: linear-gradient(90deg, var(--red), var(--blue));
+        }
+
+        .form-content { padding: 30px; }
+
+        .form-note {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 15px;
+            margin-bottom: 27px;
+            border: 1px solid #e0eaff;
+            border-left: 4px solid var(--blue);
+            border-radius: 10px;
+            color: #536782;
+            background: #f5f9ff;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .note-icon {
+            color: var(--blue);
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .form-content form p { margin-bottom: 22px; }
+
+        .form-content form p label {
             display: block;
-
-            font-weight: bold;
-
             margin-bottom: 9px;
-
-            color: #444;
+            color: var(--navy);
+            font-size: 13px;
+            font-weight: 800;
         }
 
-        .form-card input,
-        .form-card select {
+        .form-content form p input:not([type="checkbox"]),
+        .form-content form p select,
+        .form-content form p textarea {
+            display: block;
             width: 100%;
-
-            padding: 13px;
-
-            border: 1px solid #ccc;
-
-            border-radius: 7px;
-
-            font-size: 15px;
-
-            background: white;
+            min-height: 47px;
+            padding: 12px 14px;
+            border: 1px solid #dce5f2;
+            border-radius: 9px;
+            color: var(--navy);
+            background: #fcfdff;
+            font-family: inherit;
+            font-size: 14px;
+            transition: border-color .2s, box-shadow .2s;
         }
 
-        .form-card input:focus,
-        .form-card select:focus {
+        .form-content form p textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .form-content form p input:focus,
+        .form-content form p select:focus,
+        .form-content form p textarea:focus {
             outline: none;
-
-            border-color: #c62828;
-
-            box-shadow:
-                0 0 0 2px rgba(198, 40, 40, 0.08);
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(18, 101, 216, .10);
         }
 
-        /* ================= CHECKBOX ================= */
-
-        .form-card input[type="checkbox"] {
-            width: auto;
+        .form-content form p input[type="checkbox"] {
+            width: 17px;
+            height: 17px;
             margin-right: 8px;
+            accent-color: var(--blue);
+            vertical-align: middle;
         }
 
-        /* ================= ERRORS ================= */
+        .form-content form p:has(input[type="checkbox"]) label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            line-height: 1.6;
+        }
+
+        .form-content form p .helptext {
+            display: block;
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.6;
+        }
 
         .errorlist {
-            color: #c62828;
-
             margin-bottom: 8px;
-
-            font-size: 14px;
+            padding-left: 18px;
+            color: var(--red-dark);
+            font-size: 13px;
+            line-height: 1.7;
         }
-
-        /* ================= BUTTON ================= */
 
         .save-button {
             width: 100%;
-
-            background: #c62828;
-
-            color: white;
-
+            min-height: 49px;
+            padding: 14px 20px;
+            margin-top: 4px;
             border: none;
-
-            padding: 15px;
-
-            border-radius: 8px;
-
-            font-size: 16px;
-
-            font-weight: bold;
-
+            border-radius: 9px;
+            color: white;
+            background: linear-gradient(100deg, #ff2341, #df0929);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 800;
             cursor: pointer;
-
-            margin-top: 10px;
+            box-shadow: 0 7px 18px rgba(237, 23, 56, .16);
+            transition: .2s;
         }
 
         .save-button:hover {
-            background: #a91f1f;
+            background: var(--red-dark);
+            transform: translateY(-2px);
         }
 
-        /* ================= BACK LINK ================= */
-
         .back-link {
-            display: block;
-
-            text-align: center;
-
-            margin-top: 22px;
-
-            color: #c62828;
-
-            text-decoration: none;
-
-            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 45px;
+            width: 100%;
+            margin-top: 13px;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            color: var(--blue);
+            background: #f7faff;
+            font-size: 13px;
+            font-weight: 800;
+            transition: .2s;
         }
 
         .back-link:hover {
-            text-decoration: underline;
+            background: #eaf3ff;
+            border-color: #c8dcfb;
         }
-
-        /* ================= FOOTER ================= */
 
         footer {
-            margin-top: 60px;
-
-            background: #222;
-
-            color: #ccc;
-
+            padding: 25px 6%;
+            color: #dce7f8;
+            background: #102443;
             text-align: center;
-
-            padding: 25px;
+            font-size: 12px;
+            line-height: 1.8;
         }
 
-        /* ================= MOBILE ================= */
+        footer span {
+            color: #ff5269;
+            font-weight: 800;
+        }
 
         @media (max-width: 600px) {
-
             .navbar {
-                padding: 15px 20px;
-
+                padding: 15px 5%;
+                align-items: flex-start;
                 flex-direction: column;
-
-                gap: 15px;
+                gap: 13px;
             }
 
-            .page-header {
-                padding: 45px 20px;
+            .logo { font-size: 22px; }
+
+            .hero-content {
+                width: 90%;
+                padding: 35px 0;
             }
 
-            .page-header h1 {
-                font-size: 30px;
+            .hero h1 {
+                font-size: clamp(31px, 8vw, 40px);
+                letter-spacing: -1px;
             }
 
-            .form-card {
-                padding: 25px 20px;
+            .hero p { font-size: 13px; }
+
+            .container {
+                width: 92%;
+                margin: 24px auto 35px;
             }
 
+            .card-heading { padding: 22px 19px; }
+            .card-heading h2 { font-size: 21px; }
+            .form-content { padding: 22px 17px; }
+            .form-note { padding: 12px; }
+            .form-content form p { margin-bottom: 19px; }
+            footer { padding: 22px 5%; }
         }
 
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                transition: none !important;
+            }
+        }
     </style>
-
 </head>
-
 
 <body>
 
-
-    <!-- ================= NAVBAR ================= -->
-
     <nav class="navbar">
-
         <div class="logo">
-            🩸 BloodConnect 2.0
+            <span class="logo-icon">♥</span>
+            <div>BloodConnect <span>2.0</span></div>
         </div>
 
-        <a
-            href="/accounts/home/"
-            class="dashboard-btn">
-
-            Dashboard
-
+        <a href="/accounts/home/" class="dashboard-btn">
+            ← Dashboard
         </a>
-
     </nav>
 
+    <section class="hero">
+        <svg class="veins" viewBox="0 0 1400 350" preserveAspectRatio="none" aria-hidden="true">
+            <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M-30 55 C180 125 250 5 440 85 S720 170 900 80 S1190 25 1440 95"
+                      stroke="#ed1738" stroke-width="1.5"/>
+                <path d="M-30 85 C180 150 280 40 450 110 S730 195 915 110 S1200 55 1440 125"
+                      stroke="#f4a0ae" stroke-width="1"/>
+                <path d="M-40 290 C160 230 310 350 490 270 S780 205 940 275 S1230 335 1450 250"
+                      stroke="#1265d8" stroke-width="1.5"/>
+                <path d="M-20 320 C180 260 330 375 510 300 S790 235 955 305 S1240 365 1450 280"
+                      stroke="#80b8ff" stroke-width="1"/>
+            </g>
+        </svg>
 
-    <!-- ================= HEADER ================= -->
-
-    <section class="page-header">
-
-        <h1>
-            Donor Profile
-        </h1>
-
-        <p>
-            Manage your blood donation information and availability.
-        </p>
-
+        <div class="hero-content">
+            <div class="eyebrow">♥ &nbsp; EVERY DROP COUNTS</div>
+            <h1>Donor <span class="red">Profile.</span><br>
+                Your Details, <span class="blue">Your Impact.</span>
+            </h1>
+            <p>
+                Keep your blood donation information up to date
+                so you can be contacted when someone needs your help.
+            </p>
+        </div>
     </section>
 
-
-    <!-- ================= MAIN ================= -->
-
-    <div class="container">
-
-
-        <!-- ================= SUCCESS MESSAGE ================= -->
+    <main class="container">
 
         {% if messages %}
-
             {% for message in messages %}
-
                 <div class="success-message">
-
                     ✓ {{ message }}
-
                 </div>
-
             {% endfor %}
-
         {% endif %}
 
+        <section class="form-card">
+            <div class="card-heading">
+                <h2>Donor <span class="blue">Information</span></h2>
+                <p>Review and update your donation details and availability.</p>
+                <div class="heading-line"></div>
+            </div>
 
-        <!-- ================= FORM CARD ================= -->
+            <div class="form-content">
+                <div class="form-note">
+                    <span class="note-icon">♥</span>
+                    <span>
+                        <strong>Keep your details accurate.</strong><br>
+                        Your blood group, contact information and availability help connect you with relevant blood requests.
+                    </span>
+                </div>
 
-        <div class="form-card">
+                <form method="POST">
+                    {% csrf_token %}
 
-            <h2>
-                Donor Information
-            </h2>
+                    {{ form.as_p }}
 
-            <p class="description">
+                    <button type="submit" class="save-button">
+                        ♥ &nbsp; Save Donor Profile
+                    </button>
+                </form>
 
-                Keep your information updated so that suitable
-                blood requests can find you.
-
-            </p>
-
-
-            <form method="POST">
-
-                {% csrf_token %}
-
-                {{ form.as_p }}
-
-
-                <button
-                    type="submit"
-                    class="save-button">
-
-                    Save Donor Profile
-
-                </button>
-
-            </form>
-
-
-            <a
-                href="/accounts/home/"
-                class="back-link">
-
-                ← Back to Dashboard
-
-            </a>
-
-        </div>
-
-    </div>
-
-
-    <!-- ================= FOOTER ================= -->
+                <a href="/accounts/home/" class="back-link">
+                    ← &nbsp; Back to Dashboard
+                </a>
+            </div>
+        </section>
+    </main>
 
     <footer>
-
-        <p>
-            © 2026 BloodConnect 2.0 |
-            Connecting Lives Through Blood Donation
-        </p>
-
+        © 2026 <span>BloodConnect 2.0</span> |
+        Connecting Lives Through Blood Donation
     </footer>
 
-
 </body>
-
 </html>

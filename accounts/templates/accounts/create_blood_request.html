@@ -1,13 +1,23 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Request Blood | BloodConnect 2.0</title>
 
     <style>
+        :root {
+            --red: #ed1738;
+            --red-dark: #c91030;
+            --blue: #1265d8;
+            --navy: #132747;
+            --muted: #71819a;
+            --bg: #f6f8fc;
+            --border: #e3eafa;
+            --white: #ffffff;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -15,374 +25,450 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f6fa;
-            color: #333;
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--navy);
+            background: var(--bg);
+            overflow-x: hidden;
         }
 
-        /* Navbar */
+        a { text-decoration: none; }
 
         .navbar {
-            background: #c62828;
-            color: white;
-            padding: 18px 45px;
-
+            min-height: 76px;
+            padding: 15px 6%;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 20px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(20, 50, 100, .04);
         }
 
         .logo {
-            font-size: 25px;
-            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--navy);
+            font-size: clamp(20px, 2.3vw, 27px);
+            font-weight: 800;
+            letter-spacing: -.7px;
+            white-space: nowrap;
         }
+
+        .logo-icon {
+            color: var(--red);
+            font-size: 31px;
+        }
+
+        .logo span { color: var(--red); }
 
         .nav-links {
             display: flex;
-            gap: 25px;
             align-items: center;
+            gap: 10px;
         }
 
         .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-size: 15px;
-            font-weight: bold;
+            padding: 11px 16px;
+            border-radius: 9px;
+            color: #435673;
+            font-size: 13px;
+            font-weight: 700;
+            transition: .2s;
         }
 
         .nav-links a:hover {
-            text-decoration: underline;
+            color: var(--blue);
+            background: #edf4ff;
         }
 
-        /* Main container */
+        .hero {
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
+            background:
+                radial-gradient(ellipse at 85% 15%,
+                    rgba(40, 130, 255, .20), transparent 38%),
+                linear-gradient(120deg, #fff0f3, #f6f9ff 55%, #eaf3ff);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .veins {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: .38;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            width: 88%;
+            max-width: 1150px;
+            margin: auto;
+            padding: 43px 0 46px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 14px;
+            border: 1px solid #ffd4dc;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, .8);
+            color: var(--red);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .hero h1 {
+            margin: 18px 0 12px;
+            font-size: clamp(34px, 4.2vw, 51px);
+            line-height: 1.12;
+            letter-spacing: -1.5px;
+            font-weight: 900;
+        }
+
+        .red { color: var(--red); }
+        .blue { color: var(--blue); }
+
+        .hero p {
+            max-width: 650px;
+            color: #536782;
+            font-size: 15px;
+            line-height: 1.8;
+        }
 
         .container {
-            max-width: 950px;
-            margin: 50px auto;
-            padding: 0 25px;
+            width: 88%;
+            max-width: 900px;
+            margin: 36px auto 50px;
         }
-
-        /* Page heading */
-
-        .page-title {
-            text-align: center;
-            margin-bottom: 35px;
-        }
-
-        .page-title h1 {
-            color: #c62828;
-            font-size: 36px;
-            margin-bottom: 12px;
-        }
-
-        .page-title p {
-            color: #777;
-            font-size: 16px;
-        }
-
-        /* Form card */
 
         .form-card {
+            padding: 32px;
+            border: 1px solid var(--border);
+            border-radius: 18px;
             background: white;
-            padding: 45px;
-            border-radius: 15px;
-
-            box-shadow:
-                0 8px 30px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 10px 32px rgba(25, 61, 112, .06);
         }
 
-        /* Information text */
+        .section-heading { margin-bottom: 23px; }
+
+        .section-heading h2 {
+            font-size: 24px;
+            letter-spacing: -.5px;
+        }
+
+        .section-heading p {
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .heading-line {
+            width: 55px;
+            height: 4px;
+            margin-top: 12px;
+            border-radius: 10px;
+            background: linear-gradient(90deg, var(--red), var(--blue));
+        }
 
         .required-note {
-            background: #fff4f4;
-            border-left: 4px solid #c62828;
-
-            padding: 14px 16px;
-            margin-bottom: 35px;
-
-            color: #666;
-            font-size: 14px;
-
-            border-radius: 5px;
-        }
-
-        /* Django form paragraphs */
-
-        .form-card p {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
             margin-bottom: 28px;
+            border: 1px solid #ffd8df;
+            border-left: 4px solid var(--red);
+            border-radius: 10px;
+            background: #fff5f7;
+            color: #75515b;
+            font-size: 13px;
+            line-height: 1.8;
         }
 
-        /* Labels */
+        .note-icon {
+            color: var(--red);
+            font-size: 20px;
+            flex-shrink: 0;
+        }
 
-        .form-card p label {
+        .form-card form p {
+            margin-bottom: 22px;
+        }
+
+        .form-card form p label {
             display: block;
-
-            margin-bottom: 10px;
-
-            font-weight: bold;
-            color: #444;
-            font-size: 15px;
+            margin-bottom: 9px;
+            color: var(--navy);
+            font-size: 13px;
+            font-weight: 700;
         }
 
-        /* Inputs */
-
-        .form-card p input,
-        .form-card p select,
-        .form-card p textarea {
+        .form-card form p input,
+        .form-card form p select,
+        .form-card form p textarea {
+            display: block;
             width: 100%;
-
-            padding: 13px 14px;
-
-            border: 1px solid #ccc;
-            border-radius: 8px;
-
-            font-size: 15px;
-            font-family: Arial, sans-serif;
-
-            background: white;
+            min-height: 47px;
+            padding: 12px 14px;
+            border: 1px solid #dce5f2;
+            border-radius: 9px;
+            color: var(--navy);
+            background: #fcfdff;
+            font-family: inherit;
+            font-size: 14px;
+            transition: border-color .2s, box-shadow .2s;
         }
 
-        /* Textarea */
-
-        .form-card p textarea {
-            min-height: 130px;
+        .form-card form p textarea {
+            min-height: 120px;
             resize: vertical;
         }
 
-        /* Input focus */
-
-        .form-card p input:focus,
-        .form-card p select:focus,
-        .form-card p textarea:focus {
+        .form-card form p input:focus,
+        .form-card form p select:focus,
+        .form-card form p textarea:focus {
             outline: none;
-
-            border-color: #c62828;
-
-            box-shadow:
-                0 0 0 2px rgba(198, 40, 40, 0.08);
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(18, 101, 216, .10);
         }
 
-        /* Help text */
-
-        .form-card p .helptext {
+        .form-card form p .helptext {
             display: block;
-
-            margin-top: 6px;
-
-            color: #888;
-            font-size: 13px;
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.6;
         }
-
-        /* Error messages */
 
         .form-card .errorlist {
             margin-bottom: 8px;
-            color: #c62828;
-
-            font-size: 14px;
+            padding-left: 18px;
+            color: var(--red-dark);
+            font-size: 13px;
+            line-height: 1.7;
         }
 
-        /* Submit button */
+        .form-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+            margin-top: 10px;
+        }
 
         .submit-button {
             width: 100%;
-
-            background: #c62828;
-            color: white;
-
+            min-height: 49px;
+            padding: 14px 20px;
             border: none;
-
-            padding: 15px;
-
-            border-radius: 8px;
-
-            font-size: 16px;
-            font-weight: bold;
-
+            border-radius: 9px;
+            color: white;
+            background: linear-gradient(100deg, #ff2341, #df0929);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 800;
             cursor: pointer;
-
-            margin-top: 5px;
-
-            transition: 0.2s;
+            box-shadow: 0 7px 18px rgba(237, 23, 56, .16);
+            transition: .2s;
         }
 
         .submit-button:hover {
-            background: #a91f1f;
+            background: var(--red-dark);
+            transform: translateY(-2px);
         }
 
-        /* Back button */
-
         .back-link {
-            display: block;
-
-            text-align: center;
-
-            margin-top: 25px;
-
-            color: #c62828;
-
-            text-decoration: none;
-
-            font-weight: bold;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 45px;
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            color: var(--blue);
+            background: #f7faff;
+            font-size: 13px;
+            font-weight: 800;
+            transition: .2s;
         }
 
         .back-link:hover {
-            text-decoration: underline;
+            background: #eaf3ff;
+            border-color: #c8dcfb;
         }
-
-        /* Footer */
 
         footer {
-            margin-top: 60px;
-
-            background: #222;
-
-            color: #ccc;
-
+            padding: 25px 6%;
             text-align: center;
-
-            padding: 25px;
+            color: #dce7f8;
+            background: #102443;
+            font-size: 12px;
+            line-height: 1.8;
         }
 
-        /* Mobile */
+        footer span {
+            color: #ff5269;
+            font-weight: 800;
+        }
 
-        @media (max-width: 768px) {
-
+        @media (max-width: 650px) {
             .navbar {
-                padding: 15px 20px;
-
+                padding: 15px 5%;
+                align-items: flex-start;
                 flex-direction: column;
-
-                gap: 15px;
+                gap: 12px;
             }
+
+            .logo { font-size: 22px; }
+            .logo-icon { font-size: 27px; }
 
             .nav-links {
-                gap: 15px;
+                display: grid;
+                width: 100%;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
             }
+
+            .nav-links a {
+                padding: 11px 7px;
+                border: 1px solid var(--border);
+                text-align: center;
+                font-size: 12px;
+            }
+
+            .hero-content {
+                width: 90%;
+                padding: 35px 0 39px;
+            }
+
+            .hero h1 {
+                font-size: clamp(31px, 8vw, 41px);
+                letter-spacing: -1px;
+            }
+
+            .hero p { font-size: 13px; }
 
             .container {
-                margin: 30px auto;
-
-                padding: 0 15px;
-            }
-
-            .page-title h1 {
-                font-size: 30px;
+                width: 90%;
+                margin: 25px auto 35px;
             }
 
             .form-card {
-                padding: 25px 20px;
+                padding: 22px 16px;
+                border-radius: 14px;
             }
+
+            .section-heading h2 { font-size: 21px; }
+
+            .required-note {
+                padding: 13px;
+                margin-bottom: 23px;
+            }
+
+            .form-card form p { margin-bottom: 19px; }
+
+            footer { padding: 22px 5%; }
         }
 
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                transition: none !important;
+            }
+        }
     </style>
 </head>
 
-
 <body>
 
-
-    <!-- Navbar -->
-
     <nav class="navbar">
-
         <div class="logo">
-            🩸 BloodConnect 2.0
+            <span class="logo-icon">♥</span>
+            <div>BloodConnect <span>2.0</span></div>
         </div>
 
         <div class="nav-links">
-
-            <a href="/accounts/home/">
-                Dashboard
-            </a>
-
-            <a href="/accounts/my-blood-requests/">
-                My Requests
-            </a>
-
+            <a href="/accounts/home/">Dashboard</a>
+            <a href="/accounts/my-blood-requests/">My Requests</a>
         </div>
-
     </nav>
 
+    <section class="hero">
+        <svg class="veins" viewBox="0 0 1400 350"
+             preserveAspectRatio="none" aria-hidden="true">
+            <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M-30 55 C180 125 250 5 440 85 S720 170 900 80 S1190 25 1440 95"
+                      stroke="#ed1738" stroke-width="1.5"/>
+                <path d="M-30 85 C180 150 280 40 450 110 S730 195 915 110 S1200 55 1440 125"
+                      stroke="#f4a0ae" stroke-width="1"/>
+                <path d="M-40 290 C160 230 310 350 490 270 S780 205 940 275 S1230 335 1450 250"
+                      stroke="#1265d8" stroke-width="1.5"/>
+                <path d="M-20 320 C180 260 330 375 510 300 S790 235 955 305 S1240 365 1450 280"
+                      stroke="#80b8ff" stroke-width="1"/>
+            </g>
+        </svg>
 
-    <!-- Main Content -->
-
-    <div class="container">
-
-
-        <!-- Page Title -->
-
-        <div class="page-title">
-
-            <h1>
-                Request Blood
+        <div class="hero-content">
+            <div class="eyebrow">♥ &nbsp; EVERY DROP COUNTS</div>
+            <h1>Request <span class="red">Blood.</span><br>
+                Help Starts <span class="blue">Here.</span>
             </h1>
-
             <p>
-                Submit a blood requirement and provide accurate patient details.
+                Submit your blood requirement with accurate details
+                so your request can be processed efficiently.
             </p>
-
         </div>
+    </section>
 
-
-        <!-- Form Card -->
-
-        <div class="form-card">
-
-
-            <div class="required-note">
-
-                Please enter the correct information.
-                Make sure all required details are accurate.
-
+    <main class="container">
+        <section class="form-card">
+            <div class="section-heading">
+                <h2>Blood Request <span class="blue">Details</span></h2>
+                <p>Please complete the form with correct patient and hospital information.</p>
+                <div class="heading-line"></div>
             </div>
 
+            <div class="required-note">
+                <span class="note-icon">♥</span>
+                <span>
+                    <strong>Please provide accurate information.</strong><br>
+                    Check the patient details, blood group, units and contact information before submitting.
+                </span>
+            </div>
 
             <form method="POST">
-
                 {% csrf_token %}
-
 
                 {{ form.as_p }}
 
-
-                <button
-                    type="submit"
-                    class="submit-button">
-
-                    Submit Blood Request
-
-                </button>
-
+                <div class="form-actions">
+                    <button type="submit" class="submit-button">
+                        ♥ &nbsp; Submit Blood Request
+                    </button>
+                </div>
             </form>
 
-
-            <a
-                href="/accounts/home/"
-                class="back-link">
-
-                ← Back to Dashboard
-
+            <a href="/accounts/home/" class="back-link">
+                ← &nbsp; Back to Dashboard
             </a>
-
-
-        </div>
-
-    </div>
-
-
-    <!-- Footer -->
+        </section>
+    </main>
 
     <footer>
-
         <p>
-            © 2026 BloodConnect 2.0 |
+            © 2026 <span>BloodConnect 2.0</span> |
             Connecting Lives Through Blood Donation
         </p>
-
     </footer>
 
-
 </body>
-
 </html>
+```

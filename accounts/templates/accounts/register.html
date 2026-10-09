@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +8,15 @@
     <title>Register | BloodConnect 2.0</title>
 
     <style>
+        :root {
+            --red: #f20d2f;
+            --red-dark: #d90728;
+            --blue: #0869df;
+            --navy: #102443;
+            --muted: #71819d;
+            --border: #dce6f5;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -14,145 +24,747 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f6fa;
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--navy);
+            background:
+                radial-gradient(ellipse at 10% 10%,
+                    #e4f3ff 0%, transparent 38%),
+                radial-gradient(ellipse at 90% 90%,
+                    #ffedf0 0%, transparent 38%),
+                #f8fbff;
+        }
+
+        .page {
             min-height: 100vh;
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+        }
+
+        /* LEFT BRAND PANEL */
+
+        .brand-panel {
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
+            min-height: 100vh;
+            padding: 36px clamp(22px, 4vw, 65px);
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
+            justify-content: space-between;
+            background: linear-gradient(
+                145deg, rgba(255,255,255,.96),
+                rgba(237,246,255,.9)
+            );
+            border-right: 1px solid #e3ebf7;
         }
 
-        .register-container {
-            width: 450px;
-            background: white;
-            padding: 35px;
-            border-radius: 12px;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+        .brand-panel > * {
+            position: relative;
+            z-index: 2;
         }
 
-        .logo {
-            text-align: center;
-            margin-bottom: 10px;
-            color: #c62828;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 25px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        input,
-        select {
+        .veins {
+            position: absolute;
+            z-index: 1;
+            inset: 0;
             width: 100%;
-            padding: 11px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
+            height: 100%;
+            pointer-events: none;
+            opacity: .35;
+            mask-image: linear-gradient(
+                to right,
+                black 0%,
+                transparent 35%,
+                transparent 65%,
+                black 100%
+            );
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 52px;
+            height: 52px;
+            flex-shrink: 0;
+            color: var(--red);
+        }
+
+        .brand-name {
+            font-size: clamp(22px, 2.3vw, 30px);
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .brand-name span {
+            color: var(--red);
+        }
+
+        .tagline {
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 11px;
+            letter-spacing: 1.1px;
+        }
+
+        .brand-content {
+            max-width: 470px;
+            padding: 35px 0;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--red);
+            background: #fff0f2;
+            border: 1px solid #ffd9df;
+            border-radius: 30px;
+            padding: 9px 14px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .brand-content h1 {
+            margin-top: 22px;
+            font-size: clamp(36px, 4vw, 56px);
+            line-height: 1.04;
+            letter-spacing: -1.8px;
+            font-weight: 900;
+        }
+
+        .red {
+            color: var(--red);
+        }
+
+        .blue {
+            color: var(--blue);
+        }
+
+        .intro {
+            margin-top: 17px;
+            color: #50627e;
+            line-height: 1.8;
             font-size: 15px;
         }
 
-        input:focus,
-        select:focus {
+        .benefits {
+            display: grid;
+            gap: 18px;
+            margin-top: 29px;
+        }
+
+        .benefit {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .benefit-icon {
+            width: 43px;
+            height: 43px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+            font-size: 20px;
+            color: var(--red);
+            background: #fff0f2;
+            border: 1px solid #ffdee3;
+        }
+
+        .benefit:nth-child(even) .benefit-icon {
+            color: var(--blue);
+            background: #eaf4ff;
+            border-color: #d2e7ff;
+        }
+
+        .benefit strong {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .benefit p {
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .bottom-note {
+            padding-top: 19px;
+            border-top: 1px solid #dce6f5;
+            color: #637591;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        /* REGISTER PANEL */
+
+        .form-panel {
+            min-height: 100vh;
+            padding: 30px clamp(18px, 4vw, 60px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-panel::before {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            top: -170px;
+            right: -130px;
+            border-radius: 50%;
+            background: #e0efff;
+            pointer-events: none;
+        }
+
+        .form-panel::after {
+            content: "";
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            bottom: -170px;
+            left: -120px;
+            border-radius: 50%;
+            background: #ffeaee;
+            pointer-events: none;
+        }
+
+        .register-card {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 510px;
+            padding: clamp(24px, 3vw, 38px);
+            border: 1px solid rgba(210,225,246,.9);
+            border-radius: 24px;
+            background: rgba(255,255,255,.94);
+            box-shadow: 0 22px 65px rgba(35,76,130,.10);
+        }
+
+        .mini-brand {
+            display: none;
+            text-align: center;
+            color: var(--muted);
+            font-size: 11px;
+            margin-bottom: 12px;
+        }
+
+        .form-heading {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .form-heading h2 {
+            font-size: clamp(27px, 3vw, 34px);
+            letter-spacing: -1px;
+            margin-bottom: 9px;
+        }
+
+        .form-heading h2 span {
+            color: var(--red);
+        }
+
+        .form-heading p {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .error {
+            padding: 12px 14px;
+            margin-bottom: 18px;
+            border: 1px solid #ffcbd3;
+            border-radius: 10px;
+            color: #bd1630;
+            background: #fff1f3;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #293b59;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-symbol {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #7186a7;
+            font-size: 16px;
+            pointer-events: none;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            min-width: 0;
+            min-height: 49px;
+            padding: 12px 13px 12px 42px;
+            border: 1px solid var(--border);
+            border-radius: 11px;
             outline: none;
-            border-color: #c62828;
+            color: var(--navy);
+            background: #fbfdff;
+            font-size: 14px;
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            background: #fff;
+            border-color: var(--blue);
+            box-shadow: 0 0 0 4px rgba(8,105,223,.09);
+        }
+
+        .form-group input::placeholder {
+            color: #91a0b8;
+        }
+
+        .help-text {
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        /* Django form error and help lists */
+
+        .form-group ul {
+            margin: 7px 0 0 17px;
+            color: #bd1630;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .form-group .errorlist {
+            list-style: none;
+            margin-left: 0;
         }
 
         .register-btn {
             width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            background: #c62828;
+            min-height: 51px;
+            margin-top: 7px;
+            border: 0;
+            border-radius: 12px;
+            background: linear-gradient(100deg, #ff2341, #df0929);
             color: white;
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 15px;
+            font-weight: 800;
             cursor: pointer;
-            margin-top: 10px;
+            box-shadow: 0 9px 22px rgba(242,13,47,.19);
+            transition: transform .2s, box-shadow .2s;
         }
 
         .register-btn:hover {
-            background: #a61f1f;
+            transform: translateY(-2px);
+            box-shadow: 0 13px 27px rgba(242,13,47,.25);
+        }
+
+        .register-btn:focus-visible,
+        a:focus-visible {
+            outline: 3px solid #76b6ff;
+            outline-offset: 3px;
         }
 
         .login-link {
+            margin-top: 22px;
             text-align: center;
-            margin-top: 20px;
-            color: #666;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.8;
         }
 
         .login-link a {
-            color: #c62828;
+            color: var(--blue);
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 800;
+            margin-left: 4px;
         }
 
-        .error {
-            color: #c62828;
-            font-size: 13px;
-            margin-top: 4px;
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .secure-note {
+            position: relative;
+            z-index: 2;
+            margin-top: 19px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        /* TABLET */
+
+        @media (max-width: 900px) {
+            .page {
+                grid-template-columns: .8fr 1.2fr;
+            }
+
+            .brand-panel {
+                padding: 28px 22px;
+            }
+
+            .brand-icon {
+                width: 43px;
+                height: 43px;
+            }
+
+            .brand-name {
+                font-size: 22px;
+            }
+
+            .brand-content h1 {
+                font-size: clamp(32px, 4.8vw, 43px);
+            }
+
+            .form-panel {
+                padding: 22px;
+            }
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 650px) {
+            .page {
+                display: block;
+            }
+
+            .brand-panel {
+                min-height: auto;
+                padding: 20px 20px 14px;
+                border-right: 0;
+            }
+
+            .brand-icon {
+                width: 41px;
+                height: 41px;
+            }
+
+            .brand-name {
+                font-size: 22px;
+            }
+
+            .tagline {
+                font-size: 10px;
+            }
+
+            .brand-content {
+                padding: 23px 0 17px;
+            }
+
+            .eyebrow {
+                padding: 8px 12px;
+                font-size: 10px;
+            }
+
+            .brand-content h1 {
+                font-size: clamp(32px, 9vw, 42px);
+                margin-top: 15px;
+                letter-spacing: -1px;
+            }
+
+            .intro {
+                font-size: 13px;
+                line-height: 1.65;
+                margin-top: 12px;
+            }
+
+            .benefits {
+                display: none;
+            }
+
+            .bottom-note {
+                display: none;
+            }
+
+            .form-panel {
+                min-height: auto;
+                display: block;
+                padding: 14px 16px 28px;
+                overflow: visible;
+            }
+
+            .register-card {
+                max-width: 480px;
+                margin: 0 auto;
+                padding: 24px 20px;
+                border-radius: 20px;
+                box-shadow: 0 12px 35px rgba(35,76,130,.09);
+            }
+
+            .mini-brand {
+                display: block;
+            }
+
+            .form-heading {
+                margin-bottom: 22px;
+            }
+
+            .form-heading h2 {
+                font-size: 28px;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            .form-group input,
+            .form-group select {
+                min-height: 49px;
+                font-size: 16px;
+            }
+
+            .register-btn {
+                min-height: 51px;
+            }
+
+            .login-link {
+                margin-top: 20px;
+                font-size: 12px;
+            }
+
+            .secure-note {
+                margin-top: 15px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .brand-name {
+                font-size: 20px;
+            }
+
+            .brand-content h1 {
+                font-size: 31px;
+            }
+
+            .register-card {
+                padding: 22px 16px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                transition: none !important;
+            }
         }
     </style>
 </head>
 
 <body>
 
-<div class="register-container">
+<div class="page">
 
-    <div class="logo">
-        🩸 BloodConnect 2.0
-    </div>
+    <!-- LEFT BRAND PANEL -->
+    <section class="brand-panel">
 
-    <div class="subtitle">
-        Create your account
-    </div>
+        <svg class="veins" viewBox="0 0 600 900"
+             preserveAspectRatio="none" aria-hidden="true">
+            <g fill="none" stroke-linecap="round"
+               stroke-linejoin="round" opacity=".48">
+                <path d="M-40 110 C90 130 100 220 210 260
+                         S350 340 410 440 S500 570 650 620"
+                      stroke="#ef4761" stroke-width="1.2"/>
+                <path d="M-30 145 C75 170 115 245 205 282
+                         S320 365 385 445"
+                      stroke="#f59aaa" stroke-width="1"/>
+                <path d="M620 80 C500 160 490 220 400 280
+                         S320 400 220 465 S100 580 -20 610"
+                      stroke="#1677e8" stroke-width="1.4"/>
+                <path d="M620 112 C520 185 500 240 420 300
+                         S335 405 245 475"
+                      stroke="#7eb8ff" stroke-width="1"/>
+                <path d="M-20 720 C95 660 180 690 270 735
+                         S430 800 620 745"
+                      stroke="#1677e8" stroke-width="1.1"/>
+                <path d="M-20 755 C100 700 190 730 285 770
+                         S450 820 620 780"
+                      stroke="#ef4761" stroke-width="1"/>
+            </g>
+        </svg>
 
-    <form method="POST">
+        <div class="brand">
+            <svg class="brand-icon" viewBox="0 0 64 64"
+                 fill="none" aria-hidden="true">
+                <path d="M32 56S5 39 5 21C5 8 22 2 32 16
+                         C42 2 59 8 59 21C59 39 32 56 32 56Z"
+                      fill="currentColor"/>
+                <path d="M12 29H23L29 19L36 39L42 27H52"
+                      stroke="white" stroke-width="3.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+            </svg>
 
-        {% csrf_token %}
+            <div>
+                <div class="brand-name">
+                    BloodConnect <span>2.0</span>
+                </div>
+                <div class="tagline">RIGHT DONOR. RIGHT TIME.</div>
+            </div>
+        </div>
 
-        {% for field in form %}
-
-            <div class="form-group">
-
-                {{ field.label_tag }}
-
-                {{ field }}
-
-                {% if field.errors %}
-                    {% for error in field.errors %}
-                        <div class="error">
-                            {{ error }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-
+        <div class="brand-content">
+            <div class="eyebrow">
+                <span>♥</span> EVERY DROP COUNTS
             </div>
 
-        {% endfor %}
+            <h1>
+                JOIN THE<br>
+                <span class="red">LIFE-SAVING</span><br>
+                <span class="blue">COMMUNITY.</span>
+            </h1>
 
-        <button type="submit" class="register-btn">
-            Create Account
-        </button>
+            <p class="intro">
+                Create your BloodConnect 2.0 account and connect
+                with a community working to make blood donation
+                easier and more accessible.
+            </p>
 
-    </form>
+            <div class="benefits">
+                <div class="benefit">
+                    <div class="benefit-icon">♧</div>
+                    <div>
+                        <strong>Connect Donors</strong>
+                        <p>Find and connect with blood donors</p>
+                    </div>
+                </div>
 
-    <div class="login-link">
-        Already have an account?
-        <a href="#">Login</a>
-    </div>
+                <div class="benefit">
+                    <div class="benefit-icon">♥</div>
+                    <div>
+                        <strong>Help Your Community</strong>
+                        <p>Be part of a life-saving network</p>
+                    </div>
+                </div>
+
+                <div class="benefit">
+                    <div class="benefit-icon">✓</div>
+                    <div>
+                        <strong>One Account, Real Impact</strong>
+                        <p>Access your role-based dashboard</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-note">
+            <strong>Every drop counts.</strong><br>
+            Right donor. Right time. A stronger community.
+        </div>
+    </section>
+
+    <!-- RIGHT REGISTER PANEL -->
+    <main class="form-panel">
+        <div>
+            <section class="register-card">
+
+                <div class="mini-brand">
+                    BLOODCONNECT 2.0 · CREATE ACCOUNT
+                </div>
+
+                <div class="form-heading">
+                    <h2>Create <span>Account</span></h2>
+                    <p>Join BloodConnect 2.0 and make a difference</p>
+                </div>
+
+                {% if form.errors %}
+                    <div class="error" role="alert">
+                        Please check the details below and correct
+                        any errors before submitting.
+                    </div>
+                {% endif %}
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    {% for field in form %}
+                        <div class="form-group">
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label }}
+                            </label>
+
+                            <div class="input-wrap">
+                                <span class="input-symbol"
+                                      aria-hidden="true">
+                                    {% if 'password' in field.name %}
+                                        ▣
+                                    {% elif 'email' in field.name %}
+                                        ✉
+                                    {% elif 'role' in field.name %}
+                                        ♙
+                                    {% else %}
+                                        ◉
+                                    {% endif %}
+                                </span>
+
+                                {{ field }}
+                            </div>
+
+                            {% if field.help_text %}
+                                <div class="help-text">
+                                    {{ field.help_text|safe }}
+                                </div>
+                            {% endif %}
+
+                            {% for error in field.errors %}
+                                <div class="help-text"
+                                     style="color:#bd1630;">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+
+                    {% if form.non_field_errors %}
+                        <div class="error">
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+
+                    <button type="submit" class="register-btn">
+                        Create My Account →
+                    </button>
+                </form>
+
+                <div class="login-link">
+                    Already have an account?
+                    <a href="/accounts/login/">Login here →</a>
+                </div>
+            </section>
+
+            <div class="secure-note">
+                <strong>Your account matters.</strong><br>
+                Join the BloodConnect 2.0 community.
+            </div>
+        </div>
+    </main>
 
 </div>
 
